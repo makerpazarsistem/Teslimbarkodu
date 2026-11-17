@@ -1,1356 +1,1320 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Zebra Etiket - Teslim Sistemi | 40x40 mm Etiket</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #3498db;
-        }
-        
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.1rem;
-        }
-        
-        /* KAMERA BÖLÜMÜ - EN ÜSTTE */
-        .camera-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 15px;
-            padding: 25px;
-            margin-bottom: 30px;
-            color: white;
-        }
-        
-        .camera-section .section-title {
-            color: white;
-            border-bottom-color: rgba(255,255,255,0.3);
-        }
-        
-        .scanner-buttons {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-            justify-content: center;
-        }
-        
-        .scanner-buttons .btn {
-            flex: 1;
-            min-width: 200px;
-            font-size: 18px;
-            padding: 15px;
-        }
-        
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-        
-        .form-section, .preview-section {
-            flex: 1;
-            min-width: 300px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 25px;
-        }
-        
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ecf0f1;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #34495e;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #3498db;
-        }
-        
-        textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 10px;
-        }
-        
-        .btn:hover {
-            background-color: #2980b9;
-        }
-        
-        .btn-print {
-            background-color: #27ae60;
-        }
-        
-        .btn-print:hover {
-            background-color: #219653;
-        }
-        
-        .btn-download {
-            background-color: #9b59b6;
-        }
-        
-        .btn-download:hover {
-            background-color: #8e44ad;
-        }
-        
-        .btn-scanner {
-            background-color: #e74c3c;
-        }
-        
-        .btn-scanner:hover {
-            background-color: #c0392b;
-        }
-        
-        .btn-success {
-            background-color: #27ae60;
-        }
-        
-        .btn-success:hover {
-            background-color: #219653;
-        }
-        
-        .btn-danger {
-            background-color: #e74c3c;
-        }
-        
-        .btn-danger:hover {
-            background-color: #c0392b;
-        }
-        
-        .btn-warning {
-            background-color: #f39c12;
-        }
-        
-        .btn-warning:hover {
-            background-color: #e67e22;
-        }
-        
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
-        }
-        
-        .label-preview {
-            width: 400px;
-            height: auto;
-            min-height: 450px;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            line-height: 1.4;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .label-content {
-            width: 100%;
-            word-wrap: break-word;
-            white-space: pre-line;
-        }
-        
-        .label-info {
-            text-align: center;
-            margin-top: 15px;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        
-        .zpl-output {
-            width: 100%;
-            height: 150px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            margin-top: 20px;
-            overflow-y: auto;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        
-        /* TESLİM EDİLECEK ÜRÜNLER LİSTESİ */
-        .delivery-list-section {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-            padding: 25px;
-            margin-top: 30px;
-        }
-        
-        .delivery-stats {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 10px;
-            flex: 1;
-            min-width: 150px;
-            text-align: center;
-        }
-        
-        .stat-card.pending {
-            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-        }
-        
-        .stat-card.delivered {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-        }
-        
-        .stat-number {
-            font-size: 32px;
-            font-weight: bold;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
-        .delivery-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        
-        .delivery-table th,
-        .delivery-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-        
-        .delivery-table th {
-            background-color: #3498db;
-            color: white;
-            font-weight: 600;
-        }
-        
-        .delivery-table tr:hover {
-            background-color: #f5f5f5;
-        }
-        
-        .delivery-table .delivered-row {
-            background-color: #d4edda;
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        
-        .status-pending {
-            background-color: #f39c12;
-            color: white;
-        }
-        
-        .status-delivered {
-            background-color: #27ae60;
-            color: white;
-        }
-        
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .small-btn {
-            padding: 5px 12px;
-            font-size: 12px;
-            margin: 0;
-        }
-        
-        /* KAMERA TARAYICI MODAL */
-        .scanner-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.95);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-        
-        .scanner-modal.active {
-            display: flex;
-        }
-        
-        .scanner-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            background: #000;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        
-        #qr-reader {
-            width: 100%;
-        }
-        
-        .scanner-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 45px;
-            height: 45px;
-            font-size: 24px;
-            cursor: pointer;
-            z-index: 1001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .scanner-info {
-            color: white;
-            text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 16px;
-        }
-        
-        .scan-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border: 3px solid #00ff00;
-            border-radius: 10px;
-            box-shadow: 0 0 0 9999px rgba(0,0,0,0.5);
-            pointer-events: none;
-        }
-        
-        /* BİLGİ MODALI */
-        .info-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            z-index: 1100;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .info-modal.active {
-            display: flex;
-        }
-        
-        .info-modal-content {
-            background-color: white;
-            border-radius: 15px;
-            padding: 25px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-        }
-        
-        .info-modal-close {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            cursor: pointer;
-            color: #999;
-        }
-        
-        .info-modal-close:hover {
-            color: #333;
-        }
-        
-        .order-detail {
-            margin: 15px 0;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
-        
-        .order-detail p {
-            margin: 8px 0;
-        }
-        
-        /* YAZDIRMA ALANI */
-        #printArea {
-            display: none;
-        }
-        
-        .print-label {
-            width: 400px !important;
-            padding: 10px !important;
-            font-family: 'Courier New', Courier, monospace !important;
-            font-size: 12px !important;
-            line-height: 1.3 !important;
-            background: white !important;
-            box-sizing: border-box !important;
-            page-break-inside: avoid !important;
-            color: black !important;
-        }
-        
-        .sync-status {
-            font-size: 12px;
-            margin-left: 10px;
-            padding: 3px 8px;
-            border-radius: 20px;
-            background-color: #27ae60;
-            color: white;
-        }
-        
-        .sync-status.offline {
-            background-color: #e74c3c;
-        }
-        
-        @media print {
-            body * {
-                display: none !important;
-            }
-            
-            #printArea, #printArea * {
-                display: block !important;
-                visibility: visible !important;
-            }
-            
-            #printArea {
-                position: absolute !important;
-                top: 0 !important;
-                left: 0 !important;
-                width: 100% !important;
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-            }
-            
-            .print-label {
-                display: block !important;
-                margin: 0 !important;
-                padding: 10px !important;
-                width: 400px !important;
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-            }
-            
-            @page {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            
-            body {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .label-preview {
-                width: 350px;
-            }
-            
-            .delivery-table {
-                font-size: 12px;
-            }
-            
-            .delivery-table th,
-            .delivery-table td {
-                padding: 8px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-        }
-        
-        .search-box {
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        .search-box input {
-            flex: 1;
-            margin: 0;
-        }
-        
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-btn {
-            padding: 8px 16px;
-            background-color: #ecf0f1;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .filter-btn.active {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            color: #3498db;
-        }
-        
-        .loading.active {
-            display: block;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
-    
-    <!-- Firebase SDK -->
-    <script type="module">
-        // Firebase imports
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-        import { getDatabase, ref, onValue, push, set, update, remove, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-        
-        // Your web app's Firebase configuration
-      const firebaseConfig = {
-  apiKey: "AIzaSyCbOytzmhjcGAotQe_TVJyLyRfr_wn-cnM",
-  authDomain: "teslimbarkod.firebaseapp.com",
-  databaseURL: "https://teslimbarkod-default-rtdb.firebaseio.com",
-  projectId: "teslimbarkod",
-  storageBucket: "teslimbarkod.firebasestorage.app",
-  messagingSenderId: "1057936329628",
-  appId: "1:1057936329628:web:f6eed11e930d1bc7571659"
-};
-        
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-        const ordersRef = ref(database, 'orders');
-        
-        window.db = database;
-        window.ordersRef = ordersRef;
-        
-        // Bağlantı durumunu kontrol et
-        const connectedRef = ref(database, '.info/connected');
-        onValue(connectedRef, (snap) => {
-            const statusSpan = document.getElementById('syncStatus');
-            if (snap.val() === true) {
-                statusSpan.textContent = '✅ Senkronize';
-                statusSpan.className = 'sync-status';
-            } else {
-                statusSpan.textContent = '⚠️ Bağlantı Yok';
-                statusSpan.className = 'sync-status offline';
-            }
-        });
-        
-        window.firebaseReady = true;
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Teslim Sistemi · QR Etiket — makerpazar</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,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">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=Roboto+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<!-- Kamera ile QR okuma -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<style>
+  :root{
+    --brand:#533DA1; --brand-2:#6B53C9; --brand-soft:#EEEAFB; --brand-ink:#2E2160;
+    --ink:#1E1B2E; --ink-2:#4A4660; --mute:#8A86A0; --line:#E3E0EE;
+    --bg:#F5F3FA; --card:#FFFFFF; --ok:#1F9D6B; --warn:#D9822B; --danger:#D64545;
+    --radius:14px; --shadow:0 1px 2px rgba(30,27,46,.05),0 8px 24px -8px rgba(30,27,46,.12);
+    --f-head:'Poppins',system-ui,sans-serif; --f-body:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+    --f-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+    --f-label:'Roboto Condensed','Arial Narrow','Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg)}
+  body{
+    font-family:var(--f-body);color:var(--ink);line-height:1.5;min-height:100vh;
+    background-image:radial-gradient(circle at 1px 1px,rgba(83,61,161,.09) 1px,transparent 0);
+    background-size:22px 22px;
+  }
+
+  /* ---------- Üst bar ---------- */
+  .topbar{
+    position:sticky;top:0;z-index:20;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{max-width:1240px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:18px}
+  .brand-logo{height:34px;display:block}
+  .topbar .divider{width:1px;height:28px;background:var(--line)}
+  .topbar h1{font-family:var(--f-head);font-size:1rem;font-weight:600;color:var(--ink)}
+  .topbar .sub{font-size:.8rem;color:var(--mute)}
+  .chip{
+    margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;
+    background:var(--brand-soft);color:var(--brand);font-size:.78rem;font-weight:600;white-space:nowrap
+  }
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 3px rgba(31,157,107,.18)}
+
+  main{max-width:1240px;margin:0 auto;padding:28px 24px 40px;display:grid;grid-template-columns:minmax(340px,1fr) minmax(420px,1.15fr);gap:24px;align-items:start}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .card-head{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .card-head .num{
+    width:26px;height:26px;border-radius:8px;background:var(--brand);color:#fff;font-family:var(--f-head);
+    font-size:.8rem;font-weight:600;display:grid;place-items:center;flex:none
+  }
+  .card-head h2{font-family:var(--f-head);font-size:1rem;font-weight:600}
+  .card-head .hint{margin-left:auto;font-size:.78rem;color:var(--mute)}
+  .card-body{padding:22px}
+
+  /* ---------- Form ---------- */
+  .field{margin-bottom:16px}
+  .field label{display:flex;justify-content:space-between;align-items:baseline;font-size:.8rem;font-weight:600;color:var(--ink-2);margin-bottom:6px;letter-spacing:.01em}
+  .field label .count{font-weight:500;color:var(--mute);font-family:var(--f-mono);font-size:.72rem}
+  .field label .count.over{color:var(--warn)}
+  .input-wrap{position:relative;display:flex;align-items:center}
+  .input-wrap svg.ico{position:absolute;left:13px;width:17px;height:17px;color:var(--mute);pointer-events:none}
+  input[type=text],input[type=tel],input[type=email],input[type=number],select{
+    width:100%;padding:11px 14px 11px 40px;border:1px solid var(--line);border-radius:10px;background:#FBFAFE;
+    font:500 .95rem var(--f-body);color:var(--ink);transition:border-color .15s,box-shadow .15s,background .15s
+  }
+  input.mono{font-family:var(--f-mono);font-size:.9rem;letter-spacing:.02em}
+  input:focus,select:focus{outline:none;border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 4px rgba(107,83,201,.14)}
+  input::placeholder{color:#B4B0C6;font-weight:400}
+  .input-wrap .inline-btn{
+    position:absolute;right:6px;padding:6px 10px;border:0;border-radius:7px;background:var(--brand-soft);color:var(--brand);
+    font:600 .74rem var(--f-body);cursor:pointer
+  }
+  .input-wrap .inline-btn:hover{background:#E2DCF8}
+  .input-wrap input.has-btn{padding-right:86px}
+  .warn-text{display:none;margin-top:6px;font-size:.75rem;color:var(--warn)}
+  .warn-text.show{display:block}
+
+  .settings{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:14px;border:1px dashed #D5CFEA;border-radius:12px;background:#FCFBFF;margin:6px 0 18px}
+  .settings .field{margin:0}
+  .settings select,.settings input{padding-left:12px}
+  .switch{display:flex;align-items:center;gap:10px;height:44px;cursor:pointer;user-select:none;font-size:.88rem;font-weight:500;color:var(--ink-2)}
+  .switch input{display:none}
+  .switch .track{width:38px;height:22px;border-radius:99px;background:#D8D4E6;position:relative;transition:background .15s;flex:none}
+  .switch .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .15s}
+  .switch input:checked + .track{background:var(--brand)}
+  .switch input:checked + .track::after{transform:translateX(16px)}
+
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border-radius:10px;border:1px solid transparent;
+    font:600 .9rem var(--f-body);cursor:pointer;transition:transform .08s,background .15s,border-color .15s,box-shadow .15s
+  }
+  .btn svg{width:17px;height:17px}
+  .btn:active{transform:translateY(1px)}
+  .btn-primary{background:var(--brand);color:#fff;box-shadow:0 6px 16px -6px rgba(83,61,161,.6)}
+  .btn-primary:hover{background:var(--brand-ink)}
+  .btn-print{grid-column:1/-1;padding:15px;font-size:1rem;background:var(--ink);color:#fff}
+  .btn-print:hover{background:#000}
+  .btn-print kbd{font:500 .7rem var(--f-mono);padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.14);margin-left:6px}
+  .btn-ghost{background:#fff;color:var(--ink-2);border-color:var(--line)}
+  .btn-ghost:hover{border-color:#CFC9E3;background:#FAF9FD}
+  .btn-ghost.danger:hover{color:var(--danger);border-color:#F1CACA;background:#FFF7F7}
+
+  .tips{margin-top:18px;padding:14px 16px;border-radius:12px;background:var(--brand-soft);color:var(--brand-ink);font-size:.82rem}
+  .tips b{font-family:var(--f-head);font-weight:600;display:block;margin-bottom:6px}
+  .tips ul{padding-left:18px;display:grid;gap:3px}
+
+  /* ---------- Önizleme sahnesi ---------- */
+  .stage{
+    position:relative;border-radius:12px;padding:38px 20px 30px;display:flex;flex-direction:column;align-items:center;
+    background:linear-gradient(160deg,#2A2440,#18152A);overflow:hidden
+  }
+  .stage::before{ /* yazıcı ağzı */
+    content:"";position:absolute;top:16px;left:50%;transform:translateX(-50%);width:min(420px,86%);height:10px;border-radius:6px;
+    background:#0C0A16;box-shadow:inset 0 2px 3px rgba(0,0,0,.7),0 1px 0 rgba(255,255,255,.06)
+  }
+  .stage .dims{margin-top:16px;display:flex;gap:14px;font:500 .72rem var(--f-mono);color:#A9A2C8}
+  .stage .dims span{display:inline-flex;align-items:center;gap:6px}
+  .stage .dims i{width:6px;height:6px;border-radius:50%;background:#7E6BE0;display:inline-block}
+
+  /* ---------- ETİKET (nokta birimli: 320 × 320 nokta = 40 × 40 mm @203dpi) ---------- */
+  .label{
+    --u:1.2px;
+    position:relative;width:calc(320 * var(--u));height:calc(320 * var(--u));background:#fff;color:#000;
+    border-radius:calc(8 * var(--u));overflow:hidden;font-family:var(--f-label);font-weight:700;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact
+  }
+  .stage .label{box-shadow:0 0 0 1px rgba(255,255,255,.08),0 22px 40px -12px rgba(0,0,0,.65);animation:feed .35s ease-out}
+  @keyframes feed{from{transform:translateY(-6px);opacity:.6}to{transform:none;opacity:1}}
+  .label > *{position:absolute;left:calc(12 * var(--u));width:calc(296 * var(--u));white-space:nowrap;overflow:hidden}
+  .label .l-logo{left:auto;width:auto;display:block;image-rendering:pixelated}
+  .label .l-band{background:#000;color:#fff;text-align:center;letter-spacing:.08em}
+  .label .l-txt{line-height:1.05}
+  .label .l-bar{left:auto;width:auto;overflow:visible;shape-rendering:crispEdges}
+  .label .l-id{text-align:center;line-height:1;letter-spacing:.04em}
+  .label .l-empty{color:#9a9a9a}
+
+  /* ---------- ZPL paneli ---------- */
+  .zpl-head{display:flex;align-items:center;gap:10px;margin:22px 0 10px}
+  .zpl-head h3{font-family:var(--f-head);font-size:.92rem;font-weight:600}
+  .zpl-head .meta{font:500 .72rem var(--f-mono);color:var(--mute)}
+  .zpl-head .tools{margin-left:auto;display:flex;gap:8px}
+  .zpl-head .btn{padding:8px 12px;font-size:.8rem}
+  .zpl-output{
+    background:#15121F;color:#D9D4EE;border-radius:12px;padding:16px 18px;max-height:260px;overflow:auto;
+    font:400 .8rem/1.65 var(--f-mono);white-space:pre-wrap;word-break:break-all
+  }
+  .zpl-output .c{color:#A592FF;font-weight:600}
+  .zpl-output .g{color:#6E6890;font-style:italic}
+  .zpl-output .d{color:#F2C46D}
+
+  footer{max-width:1240px;margin:0 auto;padding:10px 24px 30px;display:flex;justify-content:space-between;font-size:.78rem;color:var(--mute)}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);opacity:0;pointer-events:none;z-index:50;
+    background:var(--ink);color:#fff;padding:11px 18px;border-radius:10px;font-size:.86rem;font-weight:500;
+    box-shadow:0 12px 30px -8px rgba(0,0,0,.4);transition:all .22s ease
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  #printArea{display:none}
+
+  @media (max-width:980px){
+    main{grid-template-columns:1fr}
+    .label{--u:1px}
+  }
+  @media (max-width:520px){
+    .settings{grid-template-columns:1fr}
+    .topbar .sub,.topbar .divider,.chip{display:none}
+    .topbar h1{font-size:.9rem}
+    .card-head .hint{display:none}
+    .label{--u:.9px}
+  }
+
+  /* ---------- YAZDIRMA: yalnızca 40 × 40 mm etiket ---------- */
+  @media print{
+    html,body{background:#fff !important;background-image:none !important;margin:0 !important;padding:0 !important}
+    body > *:not(#printArea){display:none !important}
+    #printArea{display:block !important}
+    #printArea .label{--u:calc(var(--label-mm, 100mm) / 320);border-radius:0;box-shadow:none;animation:none;page-break-after:always;break-after:page}
+    #printArea .label:last-child{page-break-after:auto;break-after:auto}
+    .label .l-empty{color:#000}
+  }
+
+  /* ================= Teslim sistemi eklemeleri ================= */
+  textarea{
+    width:100%;min-height:84px;resize:vertical;padding:11px 14px 11px 40px;border:1px solid var(--line);border-radius:10px;background:#FBFAFE;
+    font:500 .95rem/1.5 var(--f-body);color:var(--ink);transition:border-color .15s,box-shadow .15s,background .15s
+  }
+  textarea:focus{outline:none;border-color:var(--brand-2);background:#fff;box-shadow:0 0 0 4px rgba(107,83,201,.14)}
+  textarea::placeholder{color:#B4B0C6;font-weight:400}
+  .input-wrap.top{align-items:flex-start}
+  .input-wrap.top svg.ico{top:13px}
+  .optional{font-weight:500;color:var(--mute)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .actions.single{grid-template-columns:1fr}
+  .btn-sm{padding:8px 12px;font-size:.8rem;border-radius:8px}
+  .btn-ok{background:var(--ok);color:#fff}
+  .btn-ok:hover{background:#178459}
+
+  /* Senkron çipi */
+  .chip.wait .dot{background:#C9A227;box-shadow:0 0 0 3px rgba(201,162,39,.2);animation:pulse 1.2s infinite}
+  .chip.off{background:#FDECEC;color:var(--danger)}
+  .chip.off .dot{background:var(--danger);box-shadow:0 0 0 3px rgba(214,69,69,.18)}
+  @keyframes pulse{50%{opacity:.35}}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:28px 24px 0}
+  main{padding-top:24px}
+
+  /* QR sorgu alanı */
+  .scan-hero{
+    position:relative;overflow:hidden;border-radius:18px;padding:26px 28px;color:#fff;
+    background:linear-gradient(120deg,#3E2C86 0%,#533DA1 45%,#6B53C9 100%);
+    display:grid;grid-template-columns:auto 1fr auto;gap:26px;align-items:center;box-shadow:0 18px 40px -18px rgba(83,61,161,.7)
+  }
+  .scan-hero::after{
+    content:"";position:absolute;right:-60px;top:-60px;width:260px;height:260px;border-radius:50%;
+    background:radial-gradient(circle,rgba(255,255,255,.14),transparent 65%);pointer-events:none
+  }
+  .scan-icon{width:64px;height:64px;border-radius:16px;background:rgba(255,255,255,.14);display:grid;place-items:center}
+  .scan-icon svg{width:34px;height:34px}
+  .scan-hero h2{font-family:var(--f-head);font-size:1.2rem;font-weight:600;margin-bottom:4px}
+  .scan-hero p{font-size:.86rem;opacity:.85;max-width:520px}
+  .scan-controls{display:flex;flex-direction:column;gap:10px;min-width:300px;position:relative;z-index:1}
+  .btn-camera{background:#fff;color:var(--brand-ink);padding:14px 20px;font-size:.98rem;box-shadow:0 8px 20px -8px rgba(0,0,0,.45)}
+  .btn-camera:hover{background:#F3F0FF}
+  .lookup{display:flex;gap:8px}
+  .lookup input{
+    flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff;
+    font:500 .88rem var(--f-mono)
+  }
+  .lookup input::placeholder{color:rgba(255,255,255,.65);font-family:var(--f-body)}
+  .lookup input:focus{background:rgba(255,255,255,.2);border-color:#fff;box-shadow:none}
+  .lookup button{border:0;border-radius:10px;padding:0 14px;background:rgba(255,255,255,.2);color:#fff;font:600 .82rem var(--f-body);cursor:pointer}
+  .lookup button:hover{background:rgba(255,255,255,.3)}
+
+  /* Önizleme ayarları */
+  .settings.under{margin:16px 0 0;grid-template-columns:1.3fr 1fr .8fr .8fr}
+  @media (max-width:520px){ .settings.under{grid-template-columns:1fr 1fr} }
+  .preview-meta{margin-top:12px;display:flex;justify-content:center;gap:8px;font-size:.78rem;color:#C9C2E8}
+  .preview-meta b{color:#fff;font-family:var(--f-mono);font-weight:600}
+
+  /* Etiket QR */
+  .label .l-qr{left:auto;width:auto;overflow:visible;shape-rendering:crispEdges}
+  .label .l-rule{background:#000}
+  .label .l-txt{overflow-x:clip;overflow-y:visible;line-height:1.1}
+
+  /* ================= Teslim listesi ================= */
+  .list-card{margin:24px 0 0}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+  .stat{border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;background:#fff}
+  .stat .ic{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;flex:none}
+  .stat .ic svg{width:22px;height:22px}
+  .stat.pending .ic{background:#FFF3E3;color:var(--warn)}
+  .stat.delivered .ic{background:#E5F6EE;color:var(--ok)}
+  .stat.total .ic{background:var(--brand-soft);color:var(--brand)}
+  .stat .n{font-family:var(--f-head);font-size:1.7rem;font-weight:700;line-height:1}
+  .stat .t{font-size:.8rem;color:var(--mute);margin-top:4px}
+
+  .toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+  .toolbar .input-wrap{flex:1;min-width:240px}
+  .filters{display:inline-flex;padding:4px;border-radius:11px;background:#F1EEF9;gap:2px}
+  .filter-btn{border:0;background:transparent;padding:8px 14px;border-radius:8px;font:600 .82rem var(--f-body);color:var(--ink-2);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .filter-btn .c{font:600 .7rem var(--f-mono);padding:1px 7px;border-radius:99px;background:rgba(0,0,0,.06)}
+  .filter-btn.active{background:#fff;color:var(--brand);box-shadow:0 1px 3px rgba(30,27,46,.1)}
+  .filter-btn.active .c{background:var(--brand-soft)}
+
+  .table-wrap{border:1px solid var(--line);border-radius:12px;overflow:auto}
+  table.delivery-table{width:100%;border-collapse:collapse;font-size:.88rem}
+  .delivery-table th{
+    text-align:left;padding:11px 14px;background:#FAF9FD;color:var(--mute);font:600 .72rem var(--f-body);letter-spacing:.05em;text-transform:uppercase;
+    border-bottom:1px solid var(--line);white-space:nowrap
+  }
+  .delivery-table td{padding:12px 14px;border-bottom:1px solid #F0EEF6;vertical-align:middle}
+  .delivery-table tr:last-child td{border-bottom:0}
+  .delivery-table tbody tr:hover{background:#FCFBFF}
+  .delivery-table .ono{font-family:var(--f-mono);font-weight:600;color:var(--ink)}
+  .delivery-table .sub{display:block;font-size:.74rem;color:var(--mute)}
+  .delivery-table tr.delivered-row td{color:var(--mute)}
+  .delivery-table tr.delivered-row .ono{text-decoration:line-through;color:var(--mute)}
+  .delivery-table .empty{text-align:center;padding:40px 14px;color:var(--mute)}
+  .status-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:99px;font-size:.75rem;font-weight:600;white-space:nowrap}
+  .status-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .status-pending{background:#FFF3E3;color:#B5651D}
+  .status-delivered{background:#E5F6EE;color:#17845A}
+  .action-buttons{display:flex;gap:6px;justify-content:flex-end}
+  .icon-btn{
+    width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:#fff;color:var(--ink-2);display:grid;place-items:center;cursor:pointer;
+    transition:all .12s
+  }
+  .icon-btn svg{width:16px;height:16px}
+  .icon-btn:hover{border-color:#CFC9E3;color:var(--brand);background:#FAF9FD}
+  .icon-btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+  .icon-btn.ok:hover{background:#178459;color:#fff}
+  .icon-btn.del:hover{color:var(--danger);border-color:#F1CACA;background:#FFF7F7}
+  .list-foot{font-size:.76rem;color:var(--mute);margin-top:12px;text-align:center}
+  .loading{display:none;align-items:center;gap:10px;justify-content:center;padding:12px;color:var(--brand);font-size:.85rem;font-weight:500}
+  .loading.active{display:flex}
+  .spinner{width:16px;height:16px;border-radius:50%;border:2px solid var(--brand-soft);border-top-color:var(--brand);animation:spin .8s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* ================= Modallar ================= */
+  .modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(20,16,36,.62);backdrop-filter:blur(4px)}
+  .modal.active{display:flex}
+  .modal-card{background:#fff;border-radius:18px;width:min(520px,100%);max-height:88vh;overflow:auto;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);animation:pop .18s ease-out}
+  @keyframes pop{from{transform:scale(.97);opacity:0}to{transform:none;opacity:1}}
+  .modal-head{display:flex;align-items:center;gap:12px;padding:18px 22px;border-bottom:1px solid var(--line)}
+  .modal-head h3{font-family:var(--f-head);font-size:1.05rem;font-weight:600}
+  .modal-head .x{margin-left:auto;width:34px;height:34px;border-radius:9px;border:0;background:#F3F1F9;color:var(--ink-2);font-size:20px;cursor:pointer}
+  .modal-head .x:hover{background:#E9E5F5}
+  .modal-body{padding:18px 22px}
+  .order-hero{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:12px;background:var(--brand-soft);margin-bottom:14px}
+  .order-hero .no{font:700 1.3rem var(--f-mono);color:var(--brand-ink)}
+  dl.details{display:grid;grid-template-columns:120px 1fr;gap:9px 14px;font-size:.9rem}
+  dl.details dt{color:var(--mute);font-weight:500}
+  dl.details dd{color:var(--ink);font-weight:500;white-space:pre-line;word-break:break-word}
+  .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 22px 22px}
+  .modal-actions .wide{grid-column:1/-1;padding:14px;font-size:.98rem}
+
+  .scanner-modal{background:rgba(8,6,16,.94);flex-direction:column;gap:18px}
+  .scanner-box{position:relative;width:min(480px,100%);border-radius:18px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(255,255,255,.1)}
+  #qr-reader{width:100%;min-height:280px;border:0 !important}
+  #qr-reader video{display:block;border-radius:0}
+  .scanner-close{
+    position:absolute;top:18px;right:18px;width:46px;height:46px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;
+    font-size:22px;cursor:pointer;display:grid;place-items:center
+  }
+  .scanner-close:hover{background:rgba(255,255,255,.24)}
+  .scanner-info{color:#CFC8EE;font-size:.9rem;text-align:center}
+
+  @media (max-width:980px){
+    .scan-hero{grid-template-columns:1fr;gap:16px}
+    .scan-icon{display:none}
+    .scan-controls{min-width:0}
+  }
+  @media (max-width:720px){
+    .stats{grid-template-columns:1fr 1fr 1fr;gap:8px}
+    .stat{flex-direction:column;align-items:flex-start;gap:8px;padding:12px}
+    .stat .ic{width:34px;height:34px}
+    .row2{grid-template-columns:1fr}
+    /* tabloyu kartlara çevir */
+    .delivery-table thead{display:none}
+    .delivery-table, .delivery-table tbody, .delivery-table tr, .delivery-table td{display:block;width:100%}
+    .delivery-table tr{padding:12px 14px;border-bottom:1px solid var(--line)}
+    .delivery-table td{border:0;padding:3px 0;display:flex;justify-content:space-between;gap:12px}
+    .delivery-table td::before{content:attr(data-label);color:var(--mute);font-size:.75rem;font-weight:500}
+    .delivery-table td.first::before,.delivery-table td.acts::before{content:none}
+    .delivery-table td.acts{padding-top:10px}
+    .action-buttons{justify-content:flex-start}
+    .modal-actions{grid-template-columns:1fr}
+  }
+</style>
+<style id="pageSize">@page{size:100mm 100mm;margin:0}</style>
 </head>
 <body>
-    <header>
-        <h1>🏪 Zebra Etiket - Teslim Sistemi (40x40 mm)</h1>
-        <p class="subtitle">QR Kod ile Sipariş Takip ve Teslim Onay Sistemi <span id="syncStatus" class="sync-status">🔄 Bağlanıyor...</span></p>
-    </header>
-    
-    <!-- KAMERA BÖLÜMÜ - EN ÜSTTE -->
-    <div class="camera-section">
-        <h2 class="section-title">📷 QR Kod ile Sipariş Sorgula</h2>
-        <div class="scanner-buttons">
-            <button id="scanQrBtnTop" class="btn btn-scanner" style="background-color: #e74c3c;">
-                📷 Kamerayı Aç ve QR Okut
-            </button>
-        </div>
-        <p style="margin-top: 15px; font-size: 14px; text-align: center; opacity: 0.9;">
-            💡 İpucu: QR kodu okutunca sipariş bilgileri açılır, "Teslim Edildi Onayla" butonu ile teslimatı tamamlayabilirsiniz.
-        </p>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <img class="brand-logo" alt="makerpazar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAABrCAMAAACYCqEIAAAAkFBMVEUeLAsyMFpWJW1GOXNOO5FnZ2lFOHFSPKE6NU4AAP5EOHA7NU9QOJYrMRZUVKb/AP9zc/99A/s8NlMRWwf///9ubgA7O7IZUFAtMh8A/wBEMzOqVf//AAD/f////wAAAAAzMzNSPKFTPKE3NzczMzNQO5czMzMqKioyMzFVVVUzMzMzMzNQO5gzMzNOO5NOO5K/TVNWAAAAMHRSTlMXEBpXYgShpF4Bz6MkTgQBAgLTBAECBAaIAQ8DAQIBAOvc4g3T1HELTgOuLuSOs5CvscbPAAAYL0lEQVR42u1diWLbuK6lZEle4yRt5963KxK1r///d+8A1ELKkuOkaeO04kzbxNbKQ4DAAQgK/90tF9Jf2703sXbBCvDaVoDXtgK8tq8E8Gpe/TUSvEL9ZwKc81+5JVeA/zyA7b0uvPbaiX+eBMsyS+q6TpISID+uvfjHAOymrvTFZhvHccUtjtuNWCfiPwNgCXD3vsiOcWg070GoKXltX1yCpfUv3z7GVRCGcbzdOk7bQJDD8HCkq+TpKsdfHOB/QTvHYRAErfMgxMMD/hIPbRAG8SER/ilde/OrApymSgWXXhVWwdbZkOhiGo4riLGzhcquvAfM0Gt3flGApcz/cX3hQHzDuN1CRav/uQXbbQCtfXBWDf2FVbRl+cKDoIZbBS/kt2libgriIAgbB8dJiPsqyV8KYBfqGcbz5hBDfJ0WeAbbNhOqZf9xhNIOt45XBVW4EzQSQHCt/fp1AIY4prZvt3EQxM2phUV13Nkd8gDzbDn4BtB60N8xhFiuvMfXAlgKaGcHpnIV7PwNNHIr/CFXx5Xy/4TV4MuNv4EQB9U6E385gGE8H+MAju/JF8cwaGz/UWohBvwom5Bh93gmhp7er/36RQCW0hLwfYOY6ap/BCwqx7elMcdK23fCaosIxHeaiRlrcB4y9VfH+O4BhijaDcynwBPQ1T4ADk62TUKbjwJsWTbmZ4st7Q0LMehpSPnKX943wNDDZ/+kZl8n9QlWAUPawcRrkJLS8jdwg+lC9g/faYBw0ML8kiu+9w0wWVLWFk5R2J787y7NxgRwYwF6Tfm6kFvMwQzwf7p7YcOqBlftwGNy18Tp+1bRIjlA4xJ/cbIxoUpW0aFHpzw/uUh8T/Mz4v0wveKAAIZoU3DY8mISYnyQypXzuFOAcyBjFQeEEShStAc9xQdTqCE8JLZQ7BZZy6UTkxF2ED9SqG6QmiBFdgc+DNOyvzLUdwmwJHsJBEbwLRP+05NrkSimpKIhm0GMcJJjM5PleAf+KAxsGgQAOH0EqsI7xGHV2rjQmrR1hwATRA3FEdrx6xxGE0nwluPBxFoRGV3xj1sGWNijsIqHOMTBmIlXLX13AMu9b28ORDk7J8fZoDmOEHvb2pORdTolXhAzxhxPCuL2BDcpsJ9xMcSHk42H40sJVrOKeYSsWXn3BbAlEPelsH7AkSMVEoyP0NUQ64ApK2e77XKytu0GKhgRiBgSvDuqDA86HrlaDqtzMqdXxuNeAIaVZPmnFqH8QAloQCFC+jk4fNuc/A1ID48UuCtLahZJ5wlWc+Wlm0NV8fEVnYO2dTiKSMc/d5zI2n4/wGLgIxA5kNaTv2lYfFkNB43nbdtjE8Qs0SfEhBES3gltWCDHklB8OIacqtU0WzTMzvTr1mngQcUUReTLr939CQBr3S5yu4sYKMO4dU4KSWFlbUyMli0IsYPnWIIHh4BarmBNcTwYyR6ZJTs1v6MTwq3dhkSO2L7JjqztM1R0DnCcBhIXONsqiL0NfXi2KYSPhnRKICXPbZdV2VCLD4Q7/KEtmdVWx3C6Kc3Xp4YQ5jS9MPA+dRVj3rW/HOC9LxHPD6rjhkIGMKZgOJPgMfUM8DYAMYEpVRzCuLO+IOfVt3qHcFJMLpGaxWWKRgwmZQfsfIsuCh2+zsGfCbBL+jMjoopmTFjFDaJEjEjOEPtp/oyPqwI6WGQtGdFsR8eIHCkyuj0/mVFEy0ImQHyU6b8pABF8Sz6NmcY6myTJsiQr/1qAOYKfEeVI0+WpoQwNS5s1SS6tvR3EkfjBc7K12yXJbrejufjfvjiQm6RLKEitUgoHVhoZcaIFwtXuc97Q9YuXrtV/LcCEJJxcxAWJPz7BXsoobUMnoVz6nMK+tr/PNcX+iJPLbzGYLNOKkmXqnzgBxEJYyaG0HutTOI8VYLaf9/4OhpXjf4cOtjnsO50zH/0dEVYUL4LpLeWesy15xYoAIe2Az+jPQG4A9Lr96JBrRarg0beRdPlZltYKMHs2DaG6t5HVTIwkrKNnyzdyO6CImXLuVXqn3HGCRSmXtn/qZTgF6CloEfadkSqQQi0A7HgF+NMARmIs3CO4RIRcemSEKU74/Axi2uZM2IcmYIAZRT2nwybdDY+I3Kr9s432fMZBYkceV9PdADx2GJefDHDxNwMMJwg8BqVb+aKAtqYk51HihMPEBUcFfQ3gnJT19xOTmXG7007IOOwfNuJMR6cWLO0q+5w0rV8JsPyIC8hfDrB7ZoAxi3Lq1ZGJaECMwFD2sNtgsRlDyFFBy6AQoI0tUtFMfsVgRzYb+7TBgjQVOgbAe1LoklypOFtgpKXwB1vvA1o66fxXVPTbutd1J4lrQ/Lw+4aEXKTp5cIXqW/IiTnvuXLeTbIIYMzBsI1AHAMapw047hvGh47VqDyHAZaT2+Jn8Q32d3OoVHwiUBGKClQnolD9lP0AnZBNlPvghOlvPc+HvCL6ufFE0rzQDMCDOTgPcL4UxZ5+nlLqCyVDpMadFwskXGY29ie8ZZjpaemLQiHTH1OAiXcqUXWDNK7jb+pj0IcLEdr1MmETG01jILXsboHKnguywPwKbJkdD/F4/BEE1ylUANPaJkQgq3mA555REmKTL+S1PE3kg/GV5+pJvMnIYirulhpDk4cRaW9fSrkYORO9xJt6wL1d3iUPJVferMwMgMmRsf6LDOpgC8UrNo6H4JDneQ4FkEBXkJ0khzhUF1T6fqY48Razs9jRCYhAeZsMbrDVquvQsUyCLgDsE9NELaN1yLJM6qIoai7w0r+/zOjDus7KuVdLs6SgVmf8RGV3uUQuATwcgVsavjvfGi3JzPvk2XBNGnppmRQJG5v9x/xcMlOnJ2U6+5T1eG3tpSUNh/GJjJYZjJx6OvQMITecUeYsClI7Jyf6ri7KcQ5WACPCwOdmB/aTVCDJUjiqJUi1SrezN5sjNUy5FsWOHDanGHV5ssTgeIGhPu/3qjBAp6IvxBCP2gPwkqGPouG3on89mZgfSmN8p9opEUCVA6DJPMDpeATdsr+UzLSPX6Jat/nlcIsM/A8fGFFmfzI8FtjcxHyOyTDWv8WwKiPjCZKX2VYMI8V4Onq2ejhG3Wq4QkSrjeqoe/8eDADMKZMxuGX5/eEb5WLYmlGs1ix44gy8ve2gu0FGH6GcBK0qhWP1fTyhbIn5bMX/4OdjZ4NlC4be+OBGH+N3SfNheflhhzHpq8m3RTbinSg9OgVYar1ZlKzucJ3JrU2IpXZNWff9KMdejrLpc5SGnp6+WJloQyzX4JoF2O1vqt0umvgGOsBdFyTkEo0Ak9mLVAyK+v33AyVLxq1jW0IKewMnqeLgH6F1CCoFbvdPDLG2jpTH0Wwd2xZwhOkEMrcccYbejtn6CsIlgMuXxUZaJrv4UGqGMr1oZL78y1WAc/2CUdmZATJZuHs+AbhIipcZgKcPQRhor3hx9ejlNoB7Y7BYvsAU4JckGQejCTAFeimhWfj2g0cWNCntI2XksHXsnNz9zotZlSNxFq31DhXVYHl4ElnMYOMrOoAhhTZ4VoEGBjh4B8Do4ySaee1Bc5XRlZMvAZbdkBg718WcAdNnXkVGvckhL28zBXju5EF+rxx2C8CX+OrHLIyhWQnm/ysSYkFrgWn1fqXE9HAklpLWFwbeztJUd0MFOh7+1y/buNKqZwXNBihQxodK/nmfBF8Khj65vvLmMwCTPVLMXCd5BaT3AIwj5A2j8AaA5dXbvAFgJWuknBNSxru2UclZjXfE6lHfOgvARREnij08nc/nRya5aBmD2EuA3Xp0OKTYU9k+nACkrhm8E+DrwpFcHQ8XAOfmKXX6qh6oFUjvArgfPxiF0U8BfFUBvBlgbhUcpicAZHNjpgnWsI+FZfGG8niMKAQh7CGYZPEJoLJs5UGJXcPiy/r5nSp6qd+V79gDE90mwYXZWcVgBOlTKZyxyOj+9B0AR/o4vI6PAji5At51NXUVYH8JYA42nE+uBiOHjCHbM068Q/b1SWrldSyLZ99Qk98bAY4o92LabwV/GI1QdtjUWnfSiVl9XYINWR3nSO0B2L1JNYu4uF2CoxpPYJgMiYlPpN4kqy8BTsusb7V5AcMo7O5R/DTA8JlCUsuWjf+GigyII8bCmlBMlOoRq+WjTG3hg1xSGrwXsviOmv8WgDv/0dSZibqf1u0KnDSaOE/qmCtukjab4RI9wVnrjvhkbld3mgEYHkxuANwbRLXxkRxfLxqUdhZNAdZapisqEqfatOsnjt4VgLNFgHmFWXWghGZNXF0ysU7+2WCjEE/SAVa8+xlrSCtOpg7DNwGcqPhUaoKOXnLxuQ5odnEi53PimHpZgiNdOrKBIky1EeF2WYZlZEphZOqTkihdnK9dD85iSg+f611NAyYxe5yTO8upmyRclfsJKrLQbQRp3LsQnCKKKTO5CjDkvFSPuCjBTHtUx4xm4iHwSwC3Ym+uGIS0euEIMDrHUkXxVHzxTRJcENeag/NMta4jXUgkv6S+ivRuT/QTObJFyWDFIsDmLJ4rac21+2vk1aD9iynAnT7hrquNJ1CjOzeeQGq3r4chpY/NTK8slqf6i6fSeLzeayMJKK4A3Mn5D9wuXZyDqZwdrGMI8XngBgEwqp1BD4+1sP7BV+RQKYBTih5SUbyKfGgVWXodYGH0R09gvMyECEpzdqsNU0heWNZXAK7HnBT9BF6QwzNhpDN/OsBJj4c0niDRuXXt2TVeNBpvKbVBMKpoaco70SyISmTaPdIh2FEuA0yzCj0iR2eWAO4if2GAcJClXsj+brNYe0Q2763H/f6JxPvUqgXgrCNpiXDHPE+uFnCwIb8uwdkYWJnoyEvGUO/eSPrzo2Ae4EjjeH3/FV/nhaRIRrO30p5AzDLXNAlHF/kGrjHTar2SmvrcZSwTDXE5d4/LcX0ZLp4BWEWDMROjZs4/fWoOExaBsxHDOuAde1UdwCmWmdHse9luBTifoffnPiTsRikw8EqjVyV4AaX5lhoA1wsAG3an/mDjSK3nTanx/aaae0oy64PILRYBLm8EuNeuYXPqDj5BLmltCyV7EFfZ0hJwOk7V6OAw5S4Og18HcLEAsP82gEsjqPUmgA3x0EI66XySUHqpUK68dBnNiOH8INJufRlseB3g3joK2dUhYusRS/y5TlYSB2MiAMcYHUepaFr1gHr/itoI+6PuEeDECKR/BMBGr2oPZtrj1wHWw5j1mL9Uv6J33gNwqHs3tDi42HVllCj/mTKuqq7FW6hrhBLBVSK0v1POEc3UfQWAXwawIShG995gZGULKjpSDbN01LcinzzNDQBHswC/qqLrGZLN1ZAr5wfRuyR48nMYe0iI5+VkGQV7eVcdz0s4w8KmDBDQk3ZbhRez+KgKbuCi3zIHp3qHlLP5A1es6JKc1osezHhdu8Sym1KUXZP+LQDjgu6QJmdYuKmGtjsXQMy6TGTdDpb+jyE7KLmgYTiNMfopgKcuE/40QnLyVex8N/LgrB0Xkkb4qQnD4PcBvGA4SsN1WQQ40iotDsIU5UuZlq8DXI8envZcENq8mPDaahxeukmZ4ef0RoLudBXa8yUvHwdwNyVTnPiBS6E9dFk8gmS5oDl5R0tPw4no/3KAzS5JFS7ZMpP1UhcDnV2MqzP07Jk0pykXS286+e1y6V4HmEQYFA0RPaXJZOnMhbqcMQb69xufAqkC4OTmOZG8+zCNPhJgZUsFFVaSbWgrjqqpsbBwt3F2dfGtiqlw4a4JVS2P8DcCXBoknpJJnQS8iCal2reDyGnSxLkiuWQ6rJuNVUjxBoB5hiS9b8YzjFhBLWfCnOr90sJQRyNvo38zZInoAaaPALj/t3KEVUeUCMBWFrJ2yOdtLaKudOP7NwFs9C8YRPBok2DORTRpVMeaKZ1cCRhEtwJMMzjGh/EEPDr0IVdwRmWZmAafK/25PMB+Hkz0tyyJosqil+iDAa66sixH2ippSH8mzrp1OO47w5KEE4CrV6nKt1nRZiCNIrlFdD0e7Kq5Kxo6Mp26nxGxlYmR9OHeCPBlLLkjoww4ccjkKRngxDykb4l089wIrV2+5Yeo6M6tDYjYwjJfp225RgfYDquP+8bvBvjdbpKuvW4N+KfFZcbVYsYO99btAM8SZvK1hAZ+v6UXKa+ke3ygkWWa005fYof/fWgodetnJPj9AL+SLDEHsC9mQv7LORPZrVb0HL7ZpUX1xpQdBXAZXcv5+TiA+QiaeY8Pyo6myoXHb3GHYhj+doDl9b6bBfgyaeeHgfpFTkT+XoAHNuq6onkd4Ovj+MMA5nRYBfKByii1VEbpEPJKM4P9+p0AX004nAfYiNIP3MR89qb8CYDrdPB6RfFzALvJLwR4/JyXPgRhl0fXw1eN29y9F+Do3So6v0S4KF4DuLtKpCDsU1uLBRV7o4oupufXrr4ErJiumijeAvClli/qj2KyRti6xSqcJd1bVHG84BZ9YDRJo/fdmQ9dI8EJ3pIW2qPLuZcLwM2EmZ79y6KllSvyh7F0ZZ6LNs+PsnxxaRIPncwkIIvrAKfmAIxq6Re/CODwGorvBHgg9jU2Pa0vP8xl3QcDtNQArfMYFMh0d2Z3v+FKSf/OyXDHaEiz4/VdkQnvuPSrGI9fDDaIQaqi5HJ5Yal9yykd4/ulBE8008gMdMfVZ5H+bMM71H0iXx8dSd/jJk0Q/kiAJXPnlA6iL2z21Qep8WEu+zZZ0K9qnZVqZS6+FrRMd6Bzu4sPMeBUaneUWj4FZa8m/ZV8c1F5d0YuFySYLiS755hfx5523wouTdS9nCA/TBXLn2tDd3B2tjo/HZ5IvYiKmrhcYTClqnXyzcGGUIvvvgJw8HYJ/unCCrn2Q651Sv6Ga/Op6atlISZNBzjXEsPdmUXd0vhJr0mQv7F2ifv2IizXAA5vBjjo+ejwfQDLmwGWs2vuc2NbEXMka7/QFxdr5OVQt/QtXW2oaKkeYekKLhfXyHmx2zuLsFy85c1FWF6xosPpVBxcnbA7nCdXWeSiv3BbyLb4RdLov79W5RUjS1t7Et4w0Xa8dbAC7N9TMdIrAMfd/huvS3C/ADUMgnAF+IsA3Ad5uQz4dYBRHyDu4V0Bvi+AsZe3s6h2aWN3rnt1RUX3uFat0+VOz5hfK8CfWYy0rHocTACpNAcVJqw6Uyu8oJ1H9YzNHHg/y1DjMrsjOZ68AvyJAIviG6FQhRcAV0dsGyvqKhyN6ZnsOtqUAwvs9h3AF1w05QaUK8CfB/AjbyLayagJcMHlCh1VhCdcYjd4c3ckA8wA3P3zuTtz/O0AI725Dacp0Ur0Gt/inb7beMY8VvoaiXdHS22o44VxOKFEOLmnq2q4AvxJAIPaoWWB8QXA2BXJP0uuN7mZW3fE6RxhgyqCNuWMTgAe9DMOsFaAP3tru7JRa0bN0G4DgIkOR/rVdpTx3jtmnd6W/iOt+091CdbCyTGp5z9w36JkfmHYnQKcojjDJg5H5qoDGBKccxVVLCDdhlwITZncVH+SqiZR4f4zh33kEwHcz7o9L02p8v7e/wNb2ac/Zl8AYFW3u9u6UJPh6sjBu9znje/igdaKeZ0ZK/U42PhPnH149geAR/4LWXpuuu4j/NkA0+aUKMlBRYCNJQqwom1Vi3mHmt9IqnTaQ18ZOmjaHS3xVzqYgmqaBHcQNxtVZ3xtd7F/MBU2M1eRkQSn2E2nbGK15R0v7N94R9o7moCDB8XAq5o8DHCf0VPxtoWWXLe1uxeAURQJM0sbas4w+cG2MqGxzSjVznrUTni0rBM5v1xb1kcBeB1gSqL+TlVcVMbB2t2fDzCFk5+xxTvtKtpxHmCynvwH2hQ89lDD0Ka4tk8VDh/xh0ynFFvvOLwvnuOflBWt1jqgXJ7NJRA/aIeStX3EFu+8yVG/j3DnJmH2JVs4++7P+7J7qu9O4wGl/5uw50Pg+/q+tfbx/QGMUpNUxztUIUIUYaHFZRV8XXsJLoip3MR0kLMNhyCUWShvbfcDMHxaC0YV10LruOl4efNQSbu3wwvKvGAsPxpi41lzt5u13Q/AyOPMn/zU433dsRwpCFuppHFuQxeXqztSMeG26ha5VN8o8pCv/XuvACvBZNaDAsGkbfNrG5NxsirvV8jMVnx88P9l++lqN98zwMjzECjxHsYcB7qRaRS81wNvYgi5XtmNuwYYQvzobxpII8q533S1FFy002ytTs2vEnz3AEuupWO5qbwR4JQL3tnpLRsOru3zAB6pRevZljduC8o2s2v7/9hrv945wHKU2PR2Glk5RTJdiec7av8PeQZTdTmybVsAAAAASUVORK5CYII=">
+    <span class="divider"></span>
+    <div>
+      <h1>Teslim Sistemi</h1>
+      <div class="sub">QR kodlu sipariş etiketi · 10 × 10 / 4 × 4 cm · Zebra ZPL</div>
     </div>
-    
-    <div class="container">
-        <section class="form-section">
-            <h2 class="section-title">📝 Yeni Sipariş Oluştur</h2>
-            <form id="labelForm">
-                <div class="form-group">
-                    <label for="orderNumber">Sipariş Numarası</label>
-                    <input type="text" id="orderNumber" placeholder="Örn: MP001" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="customerName">Alıcı Adı-Soyadı</label>
-                    <input type="text" id="customerName" placeholder="Örn: Ahmet Yılmaz" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="phoneNumber">Telefon Numarası</label>
-                    <input type="tel" id="phoneNumber" placeholder="Örn: 0555 123 45 67" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">E-posta Adresi</label>
-                    <input type="email" id="email" placeholder="Örn: ornek@email.com">
-                </div>
-                
-                <div class="form-group">
-                    <label for="address">Açık Adres</label>
-                    <textarea id="address" placeholder="Teslimat adresini tam olarak giriniz" required>CEVİZLİ MAH. TINAZTEPE SK. No: 12A
+    <span class="chip wait" id="syncChip"><span class="dot"></span><span id="syncStatus">Bağlanıyor…</span></span>
+  </div>
+</header>
+
+<div class="wrap">
+  <!-- ============ QR SORGU ============ -->
+  <section class="scan-hero">
+    <div class="scan-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><rect x="7" y="7" width="4" height="4"/><rect x="13" y="13" width="4" height="4"/><path d="M13 7h4v2M7 15v2h2"/></svg>
+    </div>
+    <div>
+      <h2>QR Kod ile Sipariş Sorgula</h2>
+      <p>Etiketteki QR kodu okutunca sipariş bilgileri açılır; <b>Teslim Edildi</b> ile teslimatı tek dokunuşla tamamlarsınız.</p>
+    </div>
+    <div class="scan-controls">
+      <button id="scanQrBtnTop" class="btn btn-camera" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8a2 2 0 0 1 2-2h2l2-2h6l2 2h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Kamerayı Aç ve QR Okut
+      </button>
+      <form class="lookup" id="lookupForm" autocomplete="off">
+        <input type="text" id="lookupInput" placeholder="veya sipariş no yaz / el okuyucuyla okut">
+        <button type="submit">Sorgula</button>
+      </form>
+    </div>
+  </section>
+
+  <main style="padding:24px 0 0">
+    <!-- ============ FORM ============ -->
+    <section class="card">
+      <div class="card-head"><span class="num">1</span><h2>Yeni Sipariş Oluştur</h2><span class="hint">Kaydedilir ve listeye eklenir</span></div>
+      <div class="card-body">
+        <form id="labelForm" autocomplete="off" onsubmit="return false">
+          <div class="field">
+            <label for="orderNumber"><span>Sipariş Numarası</span></label>
+            <div class="input-wrap">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></svg>
+              <input type="text" id="orderNumber" class="mono has-btn" placeholder="Örn: MP001" required>
+              <button type="button" class="inline-btn" id="newNoBtn" title="Listedeki en büyük MP numarasının bir fazlası">+ Yeni No</button>
+            </div>
+            <div class="warn-text" id="dupWarn"></div>
+          </div>
+          <div class="field">
+            <label for="customerName"><span>Alıcı Adı-Soyadı</span></label>
+            <div class="input-wrap">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+              <input type="text" id="customerName" placeholder="Örn: Ahmet Yılmaz" required>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="phoneNumber"><span>Telefon Numarası</span></label>
+              <div class="input-wrap">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>
+                <input type="tel" id="phoneNumber" placeholder="Örn: 0555 123 45 67" required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="email"><span>E-posta <span class="optional">(opsiyonel)</span></span></label>
+              <div class="input-wrap">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                <input type="email" id="email" placeholder="Örn: ornek@email.com">
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="address"><span>Açık Adres</span></label>
+            <div class="input-wrap top">
+              <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+              <textarea id="address" placeholder="Teslimat adresini tam olarak giriniz" required>CEVİZLİ MAH. TINAZTEPE SK. No: 12A
  Maltepe/İSTANBUL</textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="deliveryType">Teslim Türü</label>
-                    <input type="text" id="deliveryType" placeholder="Örn: Mağaza Teslim, Kargo, Elden" value="Mağaza Teslim">
-                </div>
-                
-                <div class="form-group">
-                    <label for="productName">Ürün Adı</label>
-                    <input type="text" id="productName" placeholder="Teslim edilecek ürün">
-                </div>
-                
-                <button type="button" id="generateBtn" class="btn">
-                    ✅ Etiket Oluştur ve Listeye Ekle
-                </button>
-            </form>
-            
-            <div class="buttons">
-                <button type="button" id="printBtn" class="btn btn-print">
-                    🖨️ Yazdır
-                </button>
-                <button type="button" id="downloadBtn" class="btn btn-download">
-                    📥 ZPL İndir
-                </button>
             </div>
-        </section>
-        
-        <section class="preview-section">
-            <h2 class="section-title">🏷️ Etiket Önizleme</h2>
-            
-            <div class="label-preview" id="labelPreview">
-                <div class="label-content" id="labelContent">
-                    SİPARİŞ ETİKETİ
-====================
-Sipariş No: 
-Alıcı: 
-Telefon: 
-E-posta: 
-Adres: 
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="deliveryType"><span>Teslim Türü</span></label>
+              <div class="input-wrap">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>
+                <input type="text" id="deliveryType" list="deliveryTypes" placeholder="Örn: Mağaza Teslim, Kargo, Elden" value="Mağaza Teslim">
+                <datalist id="deliveryTypes"><option value="Mağaza Teslim"><option value="Kargo"><option value="Elden"></datalist>
+              </div>
+            </div>
+            <div class="field">
+              <label for="productName"><span>Ürün Adı</span></label>
+              <div class="input-wrap">
+                <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg>
+                <input type="text" id="productName" placeholder="Teslim edilecek ürün">
+              </div>
+            </div>
+          </div>
 
-Teslim Türü: 
-Ürün: 
+          <div class="actions single">
+            <button type="button" id="generateBtn" class="btn btn-primary" style="padding:15px;font-size:1rem">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+              Etiket Oluştur ve Listeye Ekle
+            </button>
+            <div class="row2">
+              <button type="button" id="printBtn" class="btn btn-print" style="grid-column:auto;padding:12px;font-size:.92rem">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>
+                Yazdır <kbd>Ctrl+Enter</kbd>
+              </button>
+              <button type="button" id="downloadBtn" class="btn btn-ghost">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>
+                ZPL İndir
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
 
-Lütfen formu doldurup
-"Etiketi Oluştur" butonuna tıklayın.
-                </div>
-                <div id="qrcodePreview" style="margin-top: 15px; text-align: center;"></div>
-            </div>
-            <p class="label-info">Etiket önizlemesi - QR kod sipariş numarasını içerir</p>
-            
-            <h3 class="section-title">📟 ZPL Kodu (40x40 mm)</h3>
-            <div class="zpl-output" id="zplOutput"></div>
-        </section>
+    <!-- ============ ÖNİZLEME ============ -->
+    <section class="card">
+      <div class="card-head"><span class="num">2</span><h2>Etiket Önizleme</h2><span class="hint">QR kod sipariş numarasını içerir</span></div>
+      <div class="card-body">
+        <div class="stage">
+          <div class="label" id="labelPreview"></div>
+          <div class="preview-meta" id="previewMeta">Henüz sipariş seçilmedi</div>
+          <div class="dims"><span><i></i><span id="dimMm">100 × 100 mm</span></span><span id="dimDots">800 × 800 nokta</span><span>QR</span></div>
+        </div>
+
+        <div class="settings under">
+          <div class="field">
+            <label for="labelSize">Etiket boyutu</label>
+            <select id="labelSize"><option value="100">10 × 10 cm</option><option value="40">4 × 4 cm</option></select>
+          </div>
+          <div class="field">
+            <label for="dpi">Çözünürlük</label>
+            <select id="dpi"><option value="203">203 dpi</option><option value="300">300 dpi</option></select>
+          </div>
+          <div class="field">
+            <label for="copies">Kopya</label>
+            <input type="number" id="copies" min="1" max="99" value="1">
+          </div>
+          <div class="field">
+            <label>Logo</label>
+            <label class="switch"><input type="checkbox" id="showLogo" checked><span class="track"></span>Bas</label>
+          </div>
+        </div>
+
+        <div class="zpl-head">
+          <h3>ZPL Kodu</h3><span class="meta" id="zplMeta"></span>
+          <div class="tools">
+            <button type="button" id="copyBtn" class="btn btn-ghost">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+              Kopyala
+            </button>
+          </div>
+        </div>
+        <div class="zpl-output" id="zplOutput"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ TESLİM LİSTESİ ============ -->
+  <section class="card list-card">
+    <div class="card-head"><span class="num">3</span><h2>Teslim Edilecek Siparişler</h2><span class="hint">Firebase ile anlık senkron</span></div>
+    <div class="card-body">
+      <div class="stats">
+        <div class="stat pending"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><div><div class="n" id="pendingCount">0</div><div class="t">Bekleyen Teslimat</div></div></div>
+        <div class="stat delivered"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m5 12 5 5 9-10"/></svg></div><div><div class="n" id="deliveredCount">0</div><div class="t">Teslim Edilen</div></div></div>
+        <div class="stat total"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="m3 8 9 5 9-5M12 13v8"/></svg></div><div><div class="n" id="totalCount">0</div><div class="t">Toplam Sipariş</div></div></div>
+      </div>
+
+      <div class="toolbar">
+        <div class="input-wrap">
+          <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input type="text" id="searchInput" class="has-btn" placeholder="Sipariş no, alıcı veya telefon ile ara…">
+          <button type="button" class="inline-btn" id="clearSearchBtn">Temizle</button>
+        </div>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">Tümü <span class="c" id="fcAll">0</span></button>
+          <button class="filter-btn" data-filter="pending">Bekleyen <span class="c" id="fcPending">0</span></button>
+          <button class="filter-btn" data-filter="delivered">Teslim Edilen <span class="c" id="fcDelivered">0</span></button>
+        </div>
+      </div>
+
+      <div class="loading" id="loadingIndicator"><span class="spinner"></span>Yükleniyor…</div>
+
+      <div class="table-wrap">
+        <table class="delivery-table" id="deliveryTable">
+          <thead>
+            <tr><th>Sipariş No</th><th>Alıcı</th><th>Telefon</th><th>Ürün</th><th>Teslim Türü</th><th>Durum</th><th style="text-align:right">İşlemler</th></tr>
+          </thead>
+          <tbody id="deliveryTableBody">
+            <tr><td colspan="7" class="empty">Yükleniyor…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="list-foot">Veriler Firebase üzerinde senkronize edilir · Etiket boyutu <span id="footSize">10 × 10 cm</span></div>
     </div>
-    
-    <!-- TESLİM EDİLECEK ÜRÜNLER LİSTESİ -->
-    <div class="delivery-list-section">
-        <h2 class="section-title">📦 Teslim Edilecek Siparişler</h2>
-        
-        <div class="delivery-stats">
-            <div class="stat-card pending">
-                <div class="stat-number" id="pendingCount">0</div>
-                <div class="stat-label">Bekleyen Teslimat</div>
-            </div>
-            <div class="stat-card delivered">
-                <div class="stat-number" id="deliveredCount">0</div>
-                <div class="stat-label">Teslim Edilen</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalCount">0</div>
-                <div class="stat-label">Toplam Sipariş</div>
-            </div>
-        </div>
-        
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 Sipariş No, Alıcı veya Telefon ile ara...">
-            <button id="clearSearchBtn" class="btn small-btn">Temizle</button>
-        </div>
-        
-        <div class="filter-buttons">
-            <button class="filter-btn active" data-filter="all">Tümü</button>
-            <button class="filter-btn" data-filter="pending">Bekleyen</button>
-            <button class="filter-btn" data-filter="delivered">Teslim Edilen</button>
-        </div>
-        
-        <div class="loading" id="loadingIndicator">⏳ Yükleniyor...</div>
-        
-        <div style="overflow-x: auto;">
-            <table class="delivery-table" id="deliveryTable">
-                <thead>
-                    <tr>
-                        <th>Sipariş No</th>
-                        <th>Alıcı</th>
-                        <th>Telefon</th>
-                        <th>Ürün</th>
-                        <th>Teslim Türü</th>
-                        <th>Durum</th>
-                        <th>İşlemler</th>
-                    </tr>
-                </thead>
-                <tbody id="deliveryTableBody">
-                    <tr>
-                        <td colspan="7" style="text-align: center;">Yükleniyor...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="data-info" style="font-size: 12px; color: #7f8c8d; margin-top: 10px; text-align: center;">
-            📡 Veriler Firebase üzerinde senkronize edilir | 🏷️ Etiket boyutu: 40x40 mm
-        </div>
+  </section>
+</div>
+
+<footer>
+  <span>makerpazar · Teslim Sistemi</span>
+  <span>10 × 10 / 4 × 4 cm QR etiket · Zebra uyumlu</span>
+</footer>
+
+<!-- Kamera tarayıcı -->
+<div id="scannerModal" class="modal scanner-modal">
+  <button class="scanner-close" id="closeScanner" aria-label="Kapat">✕</button>
+  <div class="scanner-box"><div id="qr-reader"></div></div>
+  <div class="scanner-info">QR kodu çerçeve içine getirin — otomatik sorgulanır</div>
+</div>
+
+<!-- Sipariş detayı -->
+<div id="infoModal" class="modal">
+  <div class="modal-card">
+    <div class="modal-head"><h3>Sipariş Detayı</h3><button class="x" id="closeModal" aria-label="Kapat">×</button></div>
+    <div class="modal-body" id="modalOrderInfo"></div>
+    <div class="modal-actions">
+      <button id="confirmDeliveryBtn" class="btn btn-ok wide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="m5 12 5 5 9-10"/></svg>
+        Teslim Edildi Onayla
+      </button>
+      <button id="printOrderBtn" class="btn btn-ghost">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>
+        Etiketi Tekrar Bas
+      </button>
+      <button id="cancelModalBtn" class="btn btn-ghost">Kapat</button>
     </div>
-    
-    <!-- Kamera Tarayıcı Modal -->
-    <div id="scannerModal" class="scanner-modal">
-        <button class="scanner-close" id="closeScanner">✕</button>
-        <div class="scanner-container">
-            <div id="qr-reader" style="width: 100%;"></div>
-            <div class="scan-overlay"></div>
-        </div>
-        <div class="scanner-info">QR kodu çerçeve içine getirin - Otomatik sorgulama</div>
-    </div>
-    
-    <!-- SİPARİŞ BİLGİ MODALI -->
-    <div id="infoModal" class="info-modal">
-        <div class="info-modal-content">
-            <span class="info-modal-close" id="closeModal">&times;</span>
-            <h3>📦 Sipariş Detayı</h3>
-            <div id="modalOrderInfo" class="order-detail"></div>
-            <div style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap;">
-                <button id="confirmDeliveryBtn" class="btn btn-success" style="flex: 1;">✅ Teslim Edildi Onayla</button>
-                <button id="printOrderBtn" class="btn btn-warning" style="flex: 1;">🖨️ Barkodu Tekrar Bas</button>
-                <button id="cancelModalBtn" class="btn btn-danger" style="flex: 1;">❌ İptal</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Yazdırma Alanı -->
-    <div id="printArea">
-        <div class="print-label" id="printLabelContent"></div>
-    </div>
-    
-    <footer>
-        <p>Zebra Etiket - 40x40 mm Termal Etiket için Özel ZPL Kodu ile QR Kod Sipariş Takip ve Teslim Onay Sistemi</p>
-    </footer>
-    
-    <script type="module">
-        // Firebase'den gelen fonksiyonları import et
-        import { getDatabase, ref, onValue, push, set, update, remove, query, orderByChild } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-database.js";
-        
-        // Global değişkenler
-        let orders = [];
-        let currentFilter = 'all';
-        let currentSearch = '';
-        let currentOrderId = null;
-        let html5QrCode = null;
-        let lastCreatedOrder = null;
-        
-        const database = window.db;
-        const ordersRef = window.ordersRef;
-        
-        // Bip sesi
-        function playBeep() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const now = audioContext.currentTime;
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                oscillator.frequency.value = 2500;
-                oscillator.type = 'sine';
-                gainNode.gain.setValueAtTime(0.5, now);
-                gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
-                oscillator.start(now);
-                oscillator.stop(now + 0.1);
-                audioContext.resume();
-            } catch(e) {}
+  </div>
+</div>
+
+<div id="printArea"></div>
+<div class="toast" id="toast"></div>
+
+<!-- Çevrimdışı QR üretici (Kazuhiko Arase QRCode, MIT) -->
+<script>(()=>{var m=(t,e)=>()=>{try{return e||t((e={exports:{}}).exports,e),e.exports}catch(n){throw e=0,n}};var I=m((m1,G)=>{G.exports={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8}});var X=m((E1,U)=>{var s1=I();function K(t){this.mode=s1.MODE_8BIT_BYTE,this.data=t}K.prototype={getLength:function(){return this.data.length},write:function(t){for(var e=0;e<this.data.length;e++)t.put(this.data.charCodeAt(e),8)}};U.exports=K});var N=m((T1,Y)=>{var v={glog:function(t){if(t<1)throw new Error("glog("+t+")");return v.LOG_TABLE[t]},gexp:function(t){for(;t<0;)t+=255;for(;t>=256;)t-=255;return v.EXP_TABLE[t]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)};for(h=0;h<8;h++)v.EXP_TABLE[h]=1<<h;var h;for(h=8;h<256;h++)v.EXP_TABLE[h]=v.EXP_TABLE[h-4]^v.EXP_TABLE[h-5]^v.EXP_TABLE[h-6]^v.EXP_TABLE[h-8];var h;for(h=0;h<255;h++)v.LOG_TABLE[v.EXP_TABLE[h]]=h;var h;Y.exports=v});var b=m((d1,J)=>{var A=N();function c(t,e){if(t.length===void 0)throw new Error(t.length+"/"+e);for(var n=0;n<t.length&&t[n]===0;)n++;this.num=new Array(t.length-n+e);for(var r=0;r<t.length-n;r++)this.num[r]=t[r+n]}c.prototype={get:function(t){return this.num[t]},getLength:function(){return this.num.length},multiply:function(t){for(var e=new Array(this.getLength()+t.getLength()-1),n=0;n<this.getLength();n++)for(var r=0;r<t.getLength();r++)e[n+r]^=A.gexp(A.glog(this.get(n))+A.glog(t.get(r)));return new c(e,0)},mod:function(t){if(this.getLength()-t.getLength()<0)return this;for(var e=A.glog(this.get(0))-A.glog(t.get(0)),n=new Array(this.getLength()),r=0;r<this.getLength();r++)n[r]=this.get(r);for(var a=0;a<t.getLength();a++)n[a]^=A.gexp(A.glog(t.get(a))+e);return new c(n,0).mod(t)}};J.exports=c});var F=m((B1,x)=>{x.exports={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7}});var Z=m((L1,W)=>{var g=I(),V=b(),u1=N(),d=F(),f={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(t){for(var e=t<<10;f.getBCHDigit(e)-f.getBCHDigit(f.G15)>=0;)e^=f.G15<<f.getBCHDigit(e)-f.getBCHDigit(f.G15);return(t<<10|e)^f.G15_MASK},getBCHTypeNumber:function(t){for(var e=t<<12;f.getBCHDigit(e)-f.getBCHDigit(f.G18)>=0;)e^=f.G18<<f.getBCHDigit(e)-f.getBCHDigit(f.G18);return t<<12|e},getBCHDigit:function(t){for(var e=0;t!==0;)e++,t>>>=1;return e},getPatternPosition:function(t){return f.PATTERN_POSITION_TABLE[t-1]},getMask:function(t,e,n){switch(t){case d.PATTERN000:return(e+n)%2===0;case d.PATTERN001:return e%2===0;case d.PATTERN010:return n%3===0;case d.PATTERN011:return(e+n)%3===0;case d.PATTERN100:return(Math.floor(e/2)+Math.floor(n/3))%2===0;case d.PATTERN101:return e*n%2+e*n%3===0;case d.PATTERN110:return(e*n%2+e*n%3)%2===0;case d.PATTERN111:return(e*n%3+(e+n)%2)%2===0;default:throw new Error("bad maskPattern:"+t)}},getErrorCorrectPolynomial:function(t){for(var e=new V([1],0),n=0;n<t;n++)e=e.multiply(new V([1,u1.gexp(n)],0));return e},getLengthInBits:function(t,e){if(1<=e&&e<10)switch(t){case g.MODE_NUMBER:return 10;case g.MODE_ALPHA_NUM:return 9;case g.MODE_8BIT_BYTE:return 8;case g.MODE_KANJI:return 8;default:throw new Error("mode:"+t)}else if(e<27)switch(t){case g.MODE_NUMBER:return 12;case g.MODE_ALPHA_NUM:return 11;case g.MODE_8BIT_BYTE:return 16;case g.MODE_KANJI:return 10;default:throw new Error("mode:"+t)}else if(e<41)switch(t){case g.MODE_NUMBER:return 14;case g.MODE_ALPHA_NUM:return 13;case g.MODE_8BIT_BYTE:return 16;case g.MODE_KANJI:return 12;default:throw new Error("mode:"+t)}else throw new Error("type:"+e)},getLostPoint:function(t){var e=t.getModuleCount(),n=0,r=0,a=0;for(r=0;r<e;r++)for(a=0;a<e;a++){for(var i=0,o=t.isDark(r,a),s=-1;s<=1;s++)if(!(r+s<0||e<=r+s))for(var u=-1;u<=1;u++)a+u<0||e<=a+u||s===0&&u===0||o===t.isDark(r+s,a+u)&&i++;i>5&&(n+=3+i-5)}for(r=0;r<e-1;r++)for(a=0;a<e-1;a++){var l=0;t.isDark(r,a)&&l++,t.isDark(r+1,a)&&l++,t.isDark(r,a+1)&&l++,t.isDark(r+1,a+1)&&l++,(l===0||l===4)&&(n+=3)}for(r=0;r<e;r++)for(a=0;a<e-6;a++)t.isDark(r,a)&&!t.isDark(r,a+1)&&t.isDark(r,a+2)&&t.isDark(r,a+3)&&t.isDark(r,a+4)&&!t.isDark(r,a+5)&&t.isDark(r,a+6)&&(n+=40);for(a=0;a<e;a++)for(r=0;r<e-6;r++)t.isDark(r,a)&&!t.isDark(r+1,a)&&t.isDark(r+2,a)&&t.isDark(r+3,a)&&t.isDark(r+4,a)&&!t.isDark(r+5,a)&&t.isDark(r+6,a)&&(n+=40);var L=0;for(a=0;a<e;a++)for(r=0;r<e;r++)t.isDark(r,a)&&L++;var p=Math.abs(100*L/e/e-50)/5;return n+=p*10,n}};W.exports=f});var O=m((A1,$)=>{$.exports={L:1,M:0,Q:3,H:2}});var q=m((p1,z)=>{var w=O();function E(t,e){this.totalCount=t,this.dataCount=e}E.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];E.getRSBlocks=function(t,e){var n=E.getRsBlockTable(t,e);if(n===void 0)throw new Error("bad rs block @ typeNumber:"+t+"/errorCorrectLevel:"+e);for(var r=n.length/3,a=[],i=0;i<r;i++)for(var o=n[i*3+0],s=n[i*3+1],u=n[i*3+2],l=0;l<o;l++)a.push(new E(s,u));return a};E.getRsBlockTable=function(t,e){switch(e){case w.L:return E.RS_BLOCK_TABLE[(t-1)*4+0];case w.M:return E.RS_BLOCK_TABLE[(t-1)*4+1];case w.Q:return E.RS_BLOCK_TABLE[(t-1)*4+2];case w.H:return E.RS_BLOCK_TABLE[(t-1)*4+3];default:return}};z.exports=E});var e1=m((P1,t1)=>{function j(){this.buffer=[],this.length=0}j.prototype={get:function(t){var e=Math.floor(t/8);return(this.buffer[e]>>>7-t%8&1)==1},put:function(t,e){for(var n=0;n<e;n++)this.putBit((t>>>e-n-1&1)==1)},getLengthInBits:function(){return this.length},putBit:function(t){var e=Math.floor(this.length/8);this.buffer.length<=e&&this.buffer.push(0),t&&(this.buffer[e]|=128>>>this.length%8),this.length++}};t1.exports=j});var i1=m((D1,a1)=>{var h1=X(),B=Z(),f1=b(),r1=q(),n1=e1();function T(t,e){this.typeNumber=t,this.errorCorrectLevel=e,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}T.prototype={addData:function(t){var e=new h1(t);this.dataList.push(e),this.dataCache=null},isDark:function(t,e){if(t<0||this.moduleCount<=t||e<0||this.moduleCount<=e)throw new Error(t+","+e);return this.modules[t][e]},getModuleCount:function(){return this.moduleCount},make:function(){if(this.typeNumber<1){var t=1;for(t=1;t<40;t++){for(var e=r1.getRSBlocks(t,this.errorCorrectLevel),n=new n1,r=0,a=0;a<e.length;a++)r+=e[a].dataCount;for(var i=0;i<this.dataList.length;i++){var o=this.dataList[i];n.put(o.mode,4),n.put(o.getLength(),B.getLengthInBits(o.mode,t)),o.write(n)}if(n.getLengthInBits()<=r*8)break}this.typeNumber=t}this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(t,e){this.moduleCount=this.typeNumber*4+17,this.modules=new Array(this.moduleCount);for(var n=0;n<this.moduleCount;n++){this.modules[n]=new Array(this.moduleCount);for(var r=0;r<this.moduleCount;r++)this.modules[n][r]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupPositionAdjustPattern(),this.setupTimingPattern(),this.setupTypeInfo(t,e),this.typeNumber>=7&&this.setupTypeNumber(t),this.dataCache===null&&(this.dataCache=T.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,e)},setupPositionProbePattern:function(t,e){for(var n=-1;n<=7;n++)if(!(t+n<=-1||this.moduleCount<=t+n))for(var r=-1;r<=7;r++)e+r<=-1||this.moduleCount<=e+r||(0<=n&&n<=6&&(r===0||r===6)||0<=r&&r<=6&&(n===0||n===6)||2<=n&&n<=4&&2<=r&&r<=4?this.modules[t+n][e+r]=!0:this.modules[t+n][e+r]=!1)},getBestMaskPattern:function(){for(var t=0,e=0,n=0;n<8;n++){this.makeImpl(!0,n);var r=B.getLostPoint(this);(n===0||t>r)&&(t=r,e=n)}return e},createMovieClip:function(t,e,n){var r=t.createEmptyMovieClip(e,n),a=1;this.make();for(var i=0;i<this.modules.length;i++)for(var o=i*a,s=0;s<this.modules[i].length;s++){var u=s*a,l=this.modules[i][s];l&&(r.beginFill(0,100),r.moveTo(u,o),r.lineTo(u+a,o),r.lineTo(u+a,o+a),r.lineTo(u,o+a),r.endFill())}return r},setupTimingPattern:function(){for(var t=8;t<this.moduleCount-8;t++)this.modules[t][6]===null&&(this.modules[t][6]=t%2===0);for(var e=8;e<this.moduleCount-8;e++)this.modules[6][e]===null&&(this.modules[6][e]=e%2===0)},setupPositionAdjustPattern:function(){for(var t=B.getPatternPosition(this.typeNumber),e=0;e<t.length;e++)for(var n=0;n<t.length;n++){var r=t[e],a=t[n];if(this.modules[r][a]===null)for(var i=-2;i<=2;i++)for(var o=-2;o<=2;o++)Math.abs(i)===2||Math.abs(o)===2||i===0&&o===0?this.modules[r+i][a+o]=!0:this.modules[r+i][a+o]=!1}},setupTypeNumber:function(t){for(var e=B.getBCHTypeNumber(this.typeNumber),n,r=0;r<18;r++)n=!t&&(e>>r&1)===1,this.modules[Math.floor(r/3)][r%3+this.moduleCount-8-3]=n;for(var a=0;a<18;a++)n=!t&&(e>>a&1)===1,this.modules[a%3+this.moduleCount-8-3][Math.floor(a/3)]=n},setupTypeInfo:function(t,e){for(var n=this.errorCorrectLevel<<3|e,r=B.getBCHTypeInfo(n),a,i=0;i<15;i++)a=!t&&(r>>i&1)===1,i<6?this.modules[i][8]=a:i<8?this.modules[i+1][8]=a:this.modules[this.moduleCount-15+i][8]=a;for(var o=0;o<15;o++)a=!t&&(r>>o&1)===1,o<8?this.modules[8][this.moduleCount-o-1]=a:o<9?this.modules[8][15-o-1+1]=a:this.modules[8][15-o-1]=a;this.modules[this.moduleCount-8][8]=!t},mapData:function(t,e){for(var n=-1,r=this.moduleCount-1,a=7,i=0,o=this.moduleCount-1;o>0;o-=2)for(o===6&&o--;;){for(var s=0;s<2;s++)if(this.modules[r][o-s]===null){var u=!1;i<t.length&&(u=(t[i]>>>a&1)===1);var l=B.getMask(e,r,o-s);l&&(u=!u),this.modules[r][o-s]=u,a--,a===-1&&(i++,a=7)}if(r+=n,r<0||this.moduleCount<=r){r-=n,n=-n;break}}}};T.PAD0=236;T.PAD1=17;T.createData=function(t,e,n){for(var r=r1.getRSBlocks(t,e),a=new n1,i=0;i<n.length;i++){var o=n[i];a.put(o.mode,4),a.put(o.getLength(),B.getLengthInBits(o.mode,t)),o.write(a)}for(var s=0,u=0;u<r.length;u++)s+=r[u].dataCount;if(a.getLengthInBits()>s*8)throw new Error("code length overflow. ("+a.getLengthInBits()+">"+s*8+")");for(a.getLengthInBits()+4<=s*8&&a.put(0,4);a.getLengthInBits()%8!==0;)a.putBit(!1);for(;!(a.getLengthInBits()>=s*8||(a.put(T.PAD0,8),a.getLengthInBits()>=s*8));)a.put(T.PAD1,8);return T.createBytes(a,r)};T.createBytes=function(t,e){for(var n=0,r=0,a=0,i=new Array(e.length),o=new Array(e.length),s=0;s<e.length;s++){var u=e[s].dataCount,l=e[s].totalCount-u;r=Math.max(r,u),a=Math.max(a,l),i[s]=new Array(u);for(var L=0;L<i[s].length;L++)i[s][L]=255&t.buffer[L+n];n+=u;var p=B.getErrorCorrectPolynomial(l),o1=new f1(i[s],p.getLength()-1),y=o1.mod(p);o[s]=new Array(p.getLength()-1);for(var P=0;P<o[s].length;P++){var Q=P+y.getLength()-o[s].length;o[s][P]=Q>=0?y.get(Q):0}}for(var H=0,C=0;C<e.length;C++)H+=e[C].totalCount;for(var k=new Array(H),S=0,D=0;D<r;D++)for(var M=0;M<e.length;M++)D<i[M].length&&(k[S++]=i[M][D]);for(var R=0;R<a;R++)for(var _=0;_<e.length;_++)R<o[_].length&&(k[S++]=o[_][R]);return k};a1.exports=T});var l1=i1(),g1=O();window.MiniQR=function(t,e){var n=unescape(encodeURIComponent(t)),r=new l1(-1,g1[e||"M"]);r.addData(n),r.make();for(var a=r.getModuleCount(),i=[],o=0;o<a;o++){for(var s=[],u=0;u<a;u++)s.push(r.isDark(o,u));i.push(s)}return i};})();</script>
+
+<script type="module">
+  /* ===================== Firebase ayarları ===================== */
+  const FIREBASE_VERSION = '12.11.0';
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbOytzmhjcGAotQe_TVJyLyRfr_wn-cnM",
+    authDomain: "teslimbarkod.firebaseapp.com",
+    databaseURL: "https://teslimbarkod-default-rtdb.firebaseio.com",
+    projectId: "teslimbarkod",
+    storageBucket: "teslimbarkod.firebasestorage.app",
+    messagingSenderId: "1057936329628",
+    appId: "1:1057936329628:web:f6eed11e930d1bc7571659"
+  };
+  const DEFAULT_ADDRESS = 'CEVİZLİ MAH. TINAZTEPE SK. No: 12A\n Maltepe/İSTANBUL';
+
+  /* ===================== Gömülü logo ===================== */
+  const LOGO_MONO = 'data:image/png;base64,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';
+  const LOGO_RATIO = 0.2233;
+
+  /* ===================== Durum ===================== */
+  let fb = null, database = null;
+  let orders = [];
+  let firstSnapshot = true;
+  let currentFilter = 'all';
+  let currentSearch = '';
+  let currentOrderId = null;
+  let html5QrCode = null;
+  let scanHandled = false;
+  let lastCreatedOrder = null;
+  let shownOrder = null;          // önizlemede gösterilen sipariş
+  let currentZPL = '';
+
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const dpiSel = $('dpi'), copiesInp = $('copies'), logoChk = $('showLogo'), sizeSel = $('labelSize');
+
+  /* Etiket boyutu → yazıcı noktası. Yerleşim 320 birimlik alanda yapılır, k ile ölçeklenir. */
+  function geom(){
+    const mm = +sizeSel.value, dpi = +dpiSel.value;
+    const dots = Math.round(mm * (dpi === 300 ? 11.811 : 8));   // 40mm: 320/472 · 100mm: 800/1181
+    return { mm, dpi, dots, k: dots / 320 };
+  }
+  function applyPageSize(){
+    const mm = +sizeSel.value;
+    $('pageSize').textContent = `@page{size:${mm}mm ${mm}mm;margin:0}`;
+    document.documentElement.style.setProperty('--label-mm', mm + 'mm');
+    $('dimMm').textContent = `${mm} × ${mm} mm`;
+    $('footSize').textContent = mm === 100 ? '10 × 10 cm' : '4 × 4 cm';
+  }
+  let previewNode = $('labelPreview');
+
+  function toast(msg, ms = 2200){
+    const t = $('toast'); t.textContent = msg; t.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), ms);
+  }
+
+  // Bip sesi
+  function playBeep(){
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioContext.currentTime;
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      oscillator.connect(gainNode); gainNode.connect(audioContext.destination);
+      oscillator.frequency.value = 2500; oscillator.type = 'sine';
+      gainNode.gain.setValueAtTime(0.5, now);
+      gainNode.gain.exponentialRampToValueAtTime(0.00001, now + 0.1);
+      oscillator.start(now); oscillator.stop(now + 0.1);
+      audioContext.resume();
+    } catch(e){}
+  }
+
+  /* ===================== Etiket yerleşimi (203 dpi nokta, 320 × 320) ===================== */
+  const W = 320, M = 12, INNER = W - 2*M;
+  const charW = h => h * 0.52;
+  const maxChars = (h, width = INNER) => Math.floor(width / charW(h));
+  const u = n => `calc(${n} * var(--u))`;
+
+  function layout(withLogo){
+    const L = { logoW: 170 };
+    L.logoH = Math.round(L.logoW * LOGO_RATIO);
+    L.logoX = Math.round((W - L.logoW) / 2); L.logoY = 7;
+    L.bandY = withLogo ? L.logoY + L.logoH + 6 : 10; L.bandH = 30; L.bandF = 21;
+    L.top = L.bandY + L.bandH + 8;
+    L.qr = 118; L.qrX = W - M - L.qr; L.qrY = L.top;
+    L.colW = L.qrX - M - 8;
+    L.rows = [
+      { key:'name',  dy:0,  h:22 },
+      { key:'phone', dy:27, h:18 },
+      { key:'type',  dy:50, h:18 },
+      { key:'prod',  dy:73, h:18 },
+      { key:'mail',  dy:96, h:16 }
+    ];
+    L.ruleY = L.top + L.qr + 6;
+    L.addrY = L.ruleY + 8; L.addrH = 18; L.addrLH = 21;
+    L.addrLines = Math.max(1, Math.floor((W - 8 - L.addrY + (L.addrLH - L.addrH)) / L.addrLH));
+    return L;
+  }
+
+  function truncateText(text, maxLength){
+    if (!text) return '';
+    text = String(text).replace(/[\x00-\x1F\x7F]/g, ' ');
+    return text.length <= maxLength ? text : text.substring(0, maxLength - 1) + '…';
+  }
+  function wrapText(text, maxLen, maxLines){
+    const out = [];
+    for (const para of String(text).replace(/\r/g,'').split('\n')){
+      const words = para.replace(/\t/g,' ').split(/ +/).filter(Boolean);
+      if (!words.length) continue;
+      let line = '';
+      for (let w of words){
+        while (w.length > maxLen){ if (line){ out.push(line); line=''; } out.push(w.slice(0, maxLen)); w = w.slice(maxLen); }
+        if (!line) line = w;
+        else if ((line + ' ' + w).length <= maxLen) line += ' ' + w;
+        else { out.push(line); line = w; }
+      }
+      if (line) out.push(line);
+    }
+    const lines = out.slice(0, maxLines);
+    if (out.length > maxLines){
+      const last = lines[maxLines-1];
+      lines[maxLines-1] = (last.length >= maxLen ? last.slice(0, maxLen-1) : last) + '…';
+    }
+    return lines;
+  }
+
+  function qrMatrix(text){
+    try { return window.MiniQR(String(text || ' '), 'M'); } catch(e){ return null; }
+  }
+
+  // Etiket modeli: önizleme/baskı ve ZPL aynı modelden üretilir
+  function model(order){
+    const withLogo = logoChk.checked;
+    const L = layout(withLogo);
+    const o = order || {};
+    const rowText = {
+      name:  o.customerName || '',
+      phone: o.phoneNumber || '',
+      type:  o.deliveryType || '',
+      prod:  o.productName || '',
+      mail:  o.email || ''
+    };
+    const rows = L.rows.map(r => ({ ...r, y: L.top + r.dy, text: truncateText(rowText[r.key], maxChars(r.h, L.colW)) }));
+    const band = truncateText('SİPARİŞ ' + (o.orderNumber || '—'), maxChars(L.bandF));
+    const addr = wrapText(o.address || '', maxChars(L.addrH), L.addrLines);
+    const matrix = order ? qrMatrix(o.orderNumber) : null;
+    const n = matrix ? matrix.length : 21;
+    const G = geom();
+    const boxD = Math.round(L.qr * G.k);
+    const magD = Math.max(1, Math.floor(boxD / n));            // QR modülü = tam nokta
+    const sizeD = n * magD;
+    const qxD = Math.round(L.qrX * G.k) + Math.round((boxD - sizeD) / 2);
+    const qyD = Math.round(L.qrY * G.k) + Math.round((boxD - sizeD) / 2);
+    return { L, withLogo, rows, band, addr, matrix, n, magD, qxD, qyD,
+             qrSize: sizeD / G.k, qrX: qxD / G.k, qrY: qyD / G.k, empty: !order };
+  }
+
+  function el(tag, cls, css, text){
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (css) Object.assign(e.style, css);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  function qrSVG(matrix){
+    const NS = 'http://www.w3.org/2000/svg';
+    const n = matrix.length;
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${n} ${n}`);
+    let d = '';
+    for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (matrix[r][c]) d += `M${c} ${r}h1v1h-1z`;
+    const p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); p.setAttribute('fill', '#000');
+    svg.appendChild(p);
+    return svg;
+  }
+
+  function buildLabel(order){
+    const D = model(order), L = D.L;
+    const root = el('div', 'label');
+    if (D.withLogo){
+      const img = el('img', 'l-logo', { left:u(L.logoX), top:u(L.logoY), width:u(L.logoW), height:u(L.logoH) });
+      img.src = LOGO_MONO; img.alt = 'makerpazar';
+      root.appendChild(img);
+    }
+    root.appendChild(el('div', 'l-band', { top:u(L.bandY), height:u(L.bandH), fontSize:u(L.bandF), lineHeight:u(L.bandH) }, D.band));
+
+    if (D.empty){
+      root.appendChild(el('div', 'l-txt l-empty', { top:u(L.top + 30), height:u(18), fontSize:u(18), textAlign:'center', whiteSpace:'normal', lineHeight:1.4 },
+        'Sipariş oluşturun veya listeden seçin'));
+      return { root, D };
+    }
+
+    D.rows.forEach(r => {
+      if (!r.text) return;
+      root.appendChild(el('div', 'l-txt', { top:u(r.y), height:u(r.h), fontSize:u(r.h), width:u(L.colW), fontWeight: r.key === 'name' ? 700 : 600 }, r.text));
+    });
+    if (D.matrix){
+      const svg = qrSVG(D.matrix);
+      svg.setAttribute('class', 'l-qr');
+      Object.assign(svg.style, { position:'absolute', left:u(D.qrX), top:u(D.qrY), width:u(D.qrSize), height:u(D.qrSize) });
+      root.appendChild(svg);
+    }
+    root.appendChild(el('div', 'l-rule', { top:u(L.ruleY), height:u(2) }));
+    D.addr.forEach((line, i) => {
+      root.appendChild(el('div', 'l-txt', { top:u(L.addrY + i * L.addrLH), height:u(L.addrH), fontSize:u(L.addrH), fontWeight:600 }, line));
+    });
+    return { root, D };
+  }
+
+  /* ===================== Logo → ZPL ^GFA ===================== */
+  const logoImg = new Image();
+  const gfaCache = {};
+  let logoReady = false;
+  logoImg.onload = () => { logoReady = true; renderShown(); };
+  logoImg.src = LOGO_MONO;
+
+  function logoGFA(w, h){
+    const key = w + 'x' + h;
+    if (gfaCache[key]) return gfaCache[key];
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(logoImg, 0, 0, w, h);
+    const px = ctx.getImageData(0, 0, w, h).data;
+    const bpr = Math.ceil(w / 8);
+    let hex = '';
+    for (let y = 0; y < h; y++){
+      for (let b = 0; b < bpr; b++){
+        let byte = 0;
+        for (let bit = 0; bit < 8; bit++){
+          const x = b * 8 + bit;
+          if (x < w){ const i = (y*w + x) * 4; if (0.299*px[i] + 0.587*px[i+1] + 0.114*px[i+2] < 128) byte |= (0x80 >> bit); }
         }
-        
-        // QR kod oluştur
-        function generateQRCode(elementId, link) {
-            const container = document.getElementById(elementId);
-            container.innerHTML = '';
-            if (link && link.trim() !== '') {
-                try {
-                    new QRCode(container, {
-                        text: link,
-                        width: 120,
-                        height: 120,
-                        colorDark: "#000000",
-                        colorLight: "#ffffff",
-                        correctLevel: QRCode.CorrectLevel.H
-                    });
-                } catch(e) {
-                    container.innerHTML = '<div style="color: red;">QR kod oluşturulamadı</div>';
-                }
-            }
+        hex += byte.toString(16).padStart(2, '0').toUpperCase();
+      }
+    }
+    return (gfaCache[key] = { bytes: bpr * h, bpr, hex });
+  }
+
+  /* ===================== ZPL (40 × 40 mm) ===================== */
+  const zplEscape = s => String(s).replace(/_/g,'_5F').replace(/\^/g,'_5E').replace(/~/g,'_7E');
+
+  function generateZPL(order){
+    const G = geom(), dpi = G.dpi;
+    const s = n => Math.round(n * G.k);
+    const copies = Math.min(99, Math.max(1, parseInt(copiesInp.value, 10) || 1));
+    if (!order) return { code: '', dpi, dots: G.dots, mm: G.mm };
+    const D = model(order), L = D.L;
+    const txt = (x, y, h, w, text, align = 'L') =>
+      `^FO${s(x)},${s(y)}^A0N,${s(h)},${s(h)}^FB${s(w)},1,0,${align}^FH_^FD${zplEscape(text)}^FS`;
+
+    const z = ['^XA', '^CI28', `^PW${G.dots}`, `^LL${G.dots}`, '^LH0,0', '^PON', '^MNY'];
+    if (D.withLogo && logoReady){
+      const g = logoGFA(s(L.logoW), s(L.logoH));
+      z.push(`^FO${s(L.logoX)},${s(L.logoY)}^GFA,${g.bytes},${g.bytes},${g.bpr},${g.hex}^FS`);
+    }
+    z.push(`^FO${s(M)},${s(L.bandY)}^GB${s(INNER)},${s(L.bandH)},${s(L.bandH)},B,0^FS`);
+    z.push(`^FO${s(M)},${s(L.bandY + (L.bandH - L.bandF) / 2)}^A0N,${s(L.bandF)},${s(L.bandF)}^FB${s(INNER)},1,0,C^FR^FH_^FD${zplEscape(D.band)}^FS`);
+    D.rows.forEach(r => { if (r.text) z.push(txt(M, r.y, r.h, L.colW, r.text)); });
+    // QR: Model 2, büyütme = modül genişliği (nokta)
+    z.push(`^FO${D.qxD},${D.qyD}^BQN,2,${D.magD}^FDMA,${String(order.orderNumber).replace(/[\^~]/g,'')}^FS`);
+    z.push(`^FO${s(M)},${s(L.ruleY)}^GB${s(INNER)},${s(2)},${s(2)}^FS`);
+    D.addr.forEach((line, i) => z.push(txt(M, L.addrY + i * L.addrLH, L.addrH, INNER, line)));
+    z.push(`^PQ${copies},0,1,Y`, '^XZ');
+    return { code: z.join('\n'), dpi, dots: G.dots, mm: G.mm };
+  }
+
+  function renderZPL(code){
+    if (!code){ $('zplOutput').innerHTML = '<span class="g">Sipariş oluşturulduğunda ZPL kodu burada görünür.</span>'; return; }
+    $('zplOutput').innerHTML = code.split('\n').map(line => {
+      line = line.replace(/(\^GFA,\d+,\d+,\d+,)([0-9A-F]+)/, (m, head, hex) => head + '\u0000' + (hex.length/2) + '\u0000');
+      return esc(line)
+        .replace(/\^FD(.*?)(?=\^FS)/g, (m, d) => '^FD\u0001' + d + '\u0002')
+        .replace(/(\^[A-Z][A-Z0-9@]?)/g, '<span class="c">$1</span>')
+        .replace(/\u0001/g, '<span class="d">').replace(/\u0002/g, '</span>')
+        .replace(/\u0000(\d+)\u0000/, '<span class="g">‹logo grafiği · $1 bayt›</span>');
+    }).join('\n');
+  }
+
+  /* ===================== Önizleme ===================== */
+  function showOrderOnLabel(order){
+    shownOrder = order || null;
+    renderShown();
+  }
+  function renderShown(){
+    const { root } = buildLabel(shownOrder);
+    root.id = 'labelPreview';
+    previewNode.replaceWith(root);
+    previewNode = root;
+    const z = generateZPL(shownOrder);
+    currentZPL = z.code;
+    renderZPL(z.code);
+    $('zplMeta').textContent = z.code ? `${z.mm === 100 ? '10×10 cm' : '4×4 cm'} · ${z.dpi} dpi · ${z.code.length.toLocaleString('tr-TR')} karakter` : '';
+    $('dimDots').textContent = `${z.dots} × ${z.dots} nokta`;
+    $('previewMeta').innerHTML = shownOrder
+      ? `Önizlenen: <b>${esc(shownOrder.orderNumber)}</b> · ${esc(shownOrder.customerName || '')}`
+      : 'Henüz sipariş seçilmedi';
+  }
+
+  // Yazdırma etiketi oluştur (eski adla uyumlu)
+  function createPrintLabel(order){
+    const copies = Math.min(99, Math.max(1, parseInt(copiesInp.value, 10) || 1));
+    const area = $('printArea');
+    area.textContent = '';
+    for (let i = 0; i < copies; i++) area.appendChild(buildLabel(order).root);
+  }
+  function printOrder(order){
+    if (!order){ toast('Yazdırılacak sipariş bulunamadı'); return; }
+    showOrderOnLabel(order);
+    createPrintLabel(order);
+    setTimeout(() => window.print(), 100);
+  }
+
+  /* ===================== Firebase ===================== */
+  function setSync(state){
+    const chip = $('syncChip'), txt = $('syncStatus');
+    chip.className = 'chip' + (state === 'ok' ? '' : state === 'wait' ? ' wait' : ' off');
+    txt.textContent = state === 'ok' ? 'Senkronize' : state === 'wait' ? 'Bağlanıyor…' : state === 'err' ? 'Firebase yüklenemedi' : 'Bağlantı yok';
+  }
+
+  async function initFirebase(){
+    try {
+      const base = `https://www.gstatic.com/firebasejs/${FIREBASE_VERSION}`;
+      const [appMod, dbMod] = await Promise.all([import(`${base}/firebase-app.js`), import(`${base}/firebase-database.js`)]);
+      fb = dbMod;
+      const app = appMod.initializeApp(firebaseConfig);
+      database = fb.getDatabase(app);
+      window.db = database;
+      window.ordersRef = fb.ref(database, 'orders');
+      fb.onValue(fb.ref(database, '.info/connected'), snap => setSync(snap.val() === true ? 'ok' : 'off'));
+      listenToFirebase();
+    } catch (e){
+      console.error('Firebase başlatılamadı:', e);
+      setSync('err');
+      $('loadingIndicator').classList.remove('active');
+      $('deliveryTableBody').innerHTML = '<tr><td colspan="7" class="empty">Firebase yüklenemedi. İnternet bağlantınızı kontrol edip sayfayı yenileyin.</td></tr>';
+    }
+  }
+
+  function listenToFirebase(){
+    const loading = $('loadingIndicator');
+    loading.classList.add('active');
+    const ordersQuery = fb.query(fb.ref(database, 'orders'), fb.orderByChild('createdAt'));
+    fb.onValue(ordersQuery, snapshot => {
+      orders = [];
+      snapshot.forEach(child => {
+        const order = child.val();
+        order.firebaseId = child.key;
+        orders.push(order);
+      });
+      orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));   // en yeni üstte
+      renderDeliveryTable();
+      updateStats();
+      loading.classList.remove('active');
+
+      // Önizlemedeki siparişi güncel tut
+      if (shownOrder){
+        const fresh = orders.find(o => o.firebaseId === shownOrder.firebaseId);
+        if (fresh) showOrderOnLabel(fresh);
+      } else if (orders.length){
+        showOrderOnLabel(orders[0]);
+      }
+      if (currentOrderId && $('infoModal').classList.contains('active')) fillOrderModal(findOrderById(currentOrderId));
+
+      // İlk açılışta hiç sipariş yoksa demo sipariş ekle
+      if (firstSnapshot){
+        firstSnapshot = false;
+        if (orders.length === 0){
+          addOrderToFirebase({
+            orderNumber: 'DEMO40MM', customerName: 'Ahmet Yılmaz', phoneNumber: '0555 123 45 67', email: 'ahmet@example.com',
+            address: DEFAULT_ADDRESS, deliveryType: 'Mağaza Teslim', productName: 'Sipariş Paketi'
+          }).then(() => console.log('Demo sipariş eklendi')).catch(() => {});
         }
-        
-        // Firebase'den verileri dinle
-        function listenToFirebase() {
-            const loading = document.getElementById('loadingIndicator');
-            loading.classList.add('active');
-            
-            const ordersQuery = query(ref(database, 'orders'), orderByChild('createdAt'));
-            onValue(ordersQuery, (snapshot) => {
-                orders = [];
-                snapshot.forEach((childSnapshot) => {
-                    const order = childSnapshot.val();
-                    order.firebaseId = childSnapshot.key;
-                    orders.push(order);
-                });
-                // Tarihe göre sırala (en yeniler üstte)
-                orders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-                renderDeliveryTable();
-                updateStats();
-                loading.classList.remove('active');
-            }, (error) => {
-                console.error("Firebase okuma hatası:", error);
-                loading.classList.remove('active');
-                document.getElementById('deliveryTableBody').innerHTML = '<tr><td colspan="7" style="text-align: center;">❌ Veriler yüklenemedi! İnternet bağlantınızı kontrol edin.</td></tr>';
-            });
-        }
-        
-        // Sipariş ekle
-        async function addOrderToFirebase(orderData) {
-            const newOrderRef = push(ref(database, 'orders'));
-            orderData.firebaseId = newOrderRef.key;
-            orderData.status = 'pending';
-            orderData.createdAt = new Date().toISOString();
-            await set(newOrderRef, orderData);
-            return orderData;
-        }
-        
-        // Sipariş güncelle
-        async function updateOrderInFirebase(orderId, updates) {
-            const orderRef = ref(database, `orders/${orderId}`);
-            await update(orderRef, updates);
-        }
-        
-        // Sipariş sil
-        async function deleteOrderFromFirebase(orderId) {
-            const orderRef = ref(database, `orders/${orderId}`);
-            await remove(orderRef);
-        }
-        
-        // Sipariş teslim et
-        async function confirmDeliver(orderId) {
-            const order = orders.find(o => o.firebaseId === orderId);
-            if (order && order.status === 'pending') {
-                await updateOrderInFirebase(orderId, { 
-                    status: 'delivered', 
-                    deliveredAt: new Date().toISOString() 
-                });
-                playBeep();
-                if (document.getElementById('infoModal').classList.contains('active')) {
-                    document.getElementById('infoModal').classList.remove('active');
-                }
-                alert('✅ Sipariş teslim edildi olarak işaretlendi!');
-            }
-        }
-        
-        // Sipariş sil (UI'dan)
-        async function deleteOrder(orderId) {
-            if (confirm('Bu siparişi silmek istediğinize emin misiniz?')) {
-                await deleteOrderFromFirebase(orderId);
-                playBeep();
-            }
-        }
-        
-        // Tabloyu yenile
-        function renderDeliveryTable() {
-            const tbody = document.getElementById('deliveryTableBody');
-            let filteredOrders = [...orders];
-            
-            if (currentFilter === 'pending') {
-                filteredOrders = filteredOrders.filter(o => o.status === 'pending');
-            } else if (currentFilter === 'delivered') {
-                filteredOrders = filteredOrders.filter(o => o.status === 'delivered');
-            }
-            
-            if (currentSearch) {
-                const searchLower = currentSearch.toLowerCase();
-                filteredOrders = filteredOrders.filter(o => 
-                    (o.orderNumber || '').toLowerCase().includes(searchLower) ||
-                    (o.customerName || '').toLowerCase().includes(searchLower) ||
-                    (o.phoneNumber || '').includes(searchLower)
-                );
-            }
-            
-            if (filteredOrders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">📭 Sipariş bulunamadı</td></tr>';
-                return;
-            }
-            
-            tbody.innerHTML = filteredOrders.map(order => `
-                <tr class="${order.status === 'delivered' ? 'delivered-row' : ''}">
-                    <td><strong>${order.orderNumber || '-'}</strong></td>
-                    <td>${order.customerName || '-'}</td>
-                    <td>${order.phoneNumber || '-'}</td>
-                    <td>${order.productName || '-'}</td>
-                    <td>${order.deliveryType || '-'}</td>
-                    <td>
-                        <span class="status-badge ${order.status === 'pending' ? 'status-pending' : 'status-delivered'}">
-                            ${order.status === 'pending' ? '⏳ Bekliyor' : '✅ Teslim Edildi'}
-                        </span>
-                    </td>
-                    <td class="action-buttons">
-                        ${order.status === 'pending' ? `
-                            <button class="btn btn-success small-btn" onclick="window.showOrderModal('${order.firebaseId}')">📱 Sorgula</button>
-                            <button class="btn btn-success small-btn" onclick="window.confirmDeliver('${order.firebaseId}')">✅ Teslim Et</button>
-                            <button class="btn btn-warning small-btn" onclick="window.reprintOrder('${order.firebaseId}')">🖨️ Tekrar Bas</button>
-                            <button class="btn btn-danger small-btn" onclick="window.deleteOrder('${order.firebaseId}')">🗑️ Sil</button>
-                        ` : `
-                            <button class="btn btn-warning small-btn" onclick="window.reprintOrder('${order.firebaseId}')">🖨️ Tekrar Bas</button>
-                            <button class="btn btn-danger small-btn" onclick="window.deleteOrder('${order.firebaseId}')">🗑️ Sil</button>
-                        `}
-                    </td>
-                </tr>
-            `).join('');
-        }
-        
-        // İstatistikleri güncelle
-        function updateStats() {
-            const pending = orders.filter(o => o.status === 'pending').length;
-            const delivered = orders.filter(o => o.status === 'delivered').length;
-            document.getElementById('pendingCount').textContent = pending;
-            document.getElementById('deliveredCount').textContent = delivered;
-            document.getElementById('totalCount').textContent = orders.length;
-        }
-        
-        // Sipariş bul
-        function findOrderById(orderId) {
-            return orders.find(o => o.firebaseId === orderId);
-        }
-        
-        function findOrderByOrderNumber(orderNumber) {
-            return orders.find(o => o.orderNumber === orderNumber);
-        }
-        
-        // Barkodu tekrar bas
-        function reprintOrder(orderId) {
-            const order = findOrderById(orderId);
-            if (order) {
-                createPrintLabel(order, order.orderNumber);
-                setTimeout(() => {
-                    window.print();
-                }, 100);
-                playBeep();
-            }
-        }
-        
-        // Modal göster
-        function showOrderModal(orderId) {
-            currentOrderId = orderId;
-            const order = findOrderById(orderId);
-            if (order) {
-                const modalContent = document.getElementById('modalOrderInfo');
-                modalContent.innerHTML = `
-                    <p><strong>🆔 Sipariş No:</strong> ${order.orderNumber}</p>
-                    <p><strong>👤 Alıcı:</strong> ${order.customerName}</p>
-                    <p><strong>📞 Telefon:</strong> ${order.phoneNumber}</p>
-                    <p><strong>📧 E-posta:</strong> ${order.email || '-'}</p>
-                    <p><strong>📍 Adres:</strong> ${order.address}</p>
-                    <p><strong>📦 Teslim Türü:</strong> ${order.deliveryType}</p>
-                    <p><strong>🎁 Ürün:</strong> ${order.productName || '-'}</p>
-                    <p><strong>📅 Oluşturulma:</strong> ${new Date(order.createdAt).toLocaleString('tr-TR')}</p>
-                    <p><strong>⏳ Durum:</strong> <span class="status-badge ${order.status === 'pending' ? 'status-pending' : 'status-delivered'}">${order.status === 'pending' ? 'Bekliyor' : 'Teslim Edildi'}</span></p>
-                `;
-                document.getElementById('infoModal').classList.add('active');
-                playBeep();
-            }
-        }
-        
-        // QR kod ile sorgulama
-        function searchByQRCode(qrData) {
-            try {
-                let orderNumber = qrData;
-                const order = findOrderByOrderNumber(orderNumber);
-                if (order) {
-                    playBeep();
-                    showOrderModal(order.firebaseId);
-                } else {
-                    alert('❌ Sipariş bulunamadı! Sipariş numarası: ' + orderNumber);
-                }
-            } catch(e) {
-                alert('❌ Geçersiz QR kod!');
-            }
-        }
-        
-        // Yazdırma etiketi oluştur
-        function createPrintLabel(order, qrLink) {
-            const printHTML = `
-                <div style="font-family: 'Courier New', Courier, monospace; font-size: 12px; line-height: 1.3; color: #000000;">
-                    <div style="text-align: center; font-weight: bold; font-size: 14px; margin-bottom: 5px; border-bottom: 1px solid #000; padding-bottom: 3px;">
-                        SİPARİŞ ETİKETİ
-                    </div>
-                    <div><strong>Sipariş No:</strong> ${order.orderNumber}</div>
-                    <div><strong>Alıcı:</strong> ${order.customerName}</div>
-                    <div><strong>Telefon:</strong> ${order.phoneNumber}</div>
-                    <div><strong>E-posta:</strong> ${order.email || '-'}</div>
-                    <div><strong>Adres:</strong> ${order.address}</div>
-                    <div><strong>Teslim Türü:</strong> ${order.deliveryType}</div>
-                    <div><strong>Ürün:</strong> ${order.productName || '-'}</div>
-                    <div style="margin: 10px 0; text-align: center;">
-                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrLink)}" style="width: 120px; height: 120px;">
-                    </div>
-                    <div style="text-align: center; font-size: 10px; margin-top: 10px;">
-                        ${order.orderNumber}
-                    </div>
-                </div>
-            `;
-            document.getElementById('printLabelContent').innerHTML = printHTML;
-        }
-        
-        // 40mm x 40mm termal etiket için ZPL üretimi (203 DPI)
-        function generateZPL(order, qrLink) {
-            let zplCode = `^XA\n`;
-            zplCode += `^LL320^PW320\n`;
-            
-            let orderNo = order.orderNumber.length > 14 ? order.orderNumber.substring(0, 12) : order.orderNumber;
-            zplCode += `^FO3,2^A0N,14,14^FDSip:${orderNo}^FS\n`;
-            
-            let customerName = order.customerName.length > 16 ? order.customerName.substring(0, 14) : order.customerName;
-            zplCode += `^FO3,18^A0N,11,11^FD${customerName}^FS\n`;
-            
-            zplCode += `^FO3,32^A0N,10,10^FD${order.phoneNumber}^FS\n`;
-            
-            let deliveryType = order.deliveryType.length > 18 ? order.deliveryType.substring(0, 16) : order.deliveryType;
-            zplCode += `^FO3,45^A0N,9,9^FD${deliveryType}^FS\n`;
-            
-            let product = order.productName && order.productName.length > 0 ? (order.productName.length > 18 ? order.productName.substring(0, 16) : order.productName) : '-';
-            zplCode += `^FO3,57^A0N,9,9^FD${product}^FS\n`;
-            
-            zplCode += `^FO230,2^BQN,3,3^FDMA,${qrLink}^FS\n`;
-            
-            zplCode += `^XZ`;
-            document.getElementById('zplOutput').textContent = zplCode;
-        }
-        
-        // Yeni sipariş oluştur
-        async function generateLabel() {
-            const orderNumber = document.getElementById('orderNumber').value;
-            const customerName = document.getElementById('customerName').value;
-            const phoneNumber = document.getElementById('phoneNumber').value;
-            const email = document.getElementById('email').value;
-            const address = document.getElementById('address').value;
-            const deliveryType = document.getElementById('deliveryType').value;
-            const productName = document.getElementById('productName').value;
-            
-            if (!orderNumber || !customerName) {
-                alert('Lütfen sipariş numarası ve alıcı adını girin!');
-                return;
-            }
-            
-            const orderData = {
-                orderNumber,
-                customerName,
-                phoneNumber,
-                email,
-                address,
-                deliveryType,
-                productName
-            };
-            
-            const loading = document.getElementById('loadingIndicator');
-            loading.classList.add('active');
-            
-            try {
-                const savedOrder = await addOrderToFirebase(orderData);
-                lastCreatedOrder = savedOrder;
-                
-                let previewText = 'SİPARİŞ ETİKETİ\n';
-                previewText += '====================\n';
-                previewText += `Sipariş No: ${orderNumber}\n`;
-                previewText += `Alıcı: ${customerName}\n`;
-                previewText += `Telefon: ${phoneNumber}\n`;
-                previewText += `E-posta: ${email}\n`;
-                previewText += `Adres: ${address}\n\n`;
-                previewText += `Teslim Türü: ${deliveryType}\n`;
-                previewText += `Ürün: ${productName || '-'}`;
-                
-                document.getElementById('labelContent').textContent = previewText;
-                generateQRCode('qrcodePreview', orderNumber);
-                createPrintLabel(orderData, orderNumber);
-                generateZPL(orderData, orderNumber);
-                
-                document.getElementById('orderNumber').value = '';
-                document.getElementById('customerName').value = '';
-                document.getElementById('phoneNumber').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('address').value = 'CEVİZLİ MAH. TINAZTEPE SK. No: 12A\n Maltepe/İSTANBUL';
-                document.getElementById('productName').value = '';
-                
-                alert('✅ Sipariş başarıyla oluşturuldu ve Firebase\'e kaydedildi!');
-            } catch (error) {
-                console.error("Kayıt hatası:", error);
-                alert('❌ Kayıt hatası: ' + error.message);
-            } finally {
-                loading.classList.remove('active');
-            }
-        }
-        
-        // Kamera tarayıcı - DÜZELTİLDİ
-        async function startScanner() {
-            const modal = document.getElementById('scannerModal');
-            modal.classList.add('active');
-            
-            try {
-                // Eğer zaten bir tarayıcı varsa temizle
-                if (html5QrCode) {
-                    try {
-                        await html5QrCode.stop();
-                        await html5QrCode.clear();
-                    } catch(e) {}
-                }
-                
-                html5QrCode = new Html5Qrcode("qr-reader");
-                
-                const config = {
-                    fps: 10,
-                    qrbox: { width: 250, height: 250 },
-                    aspectRatio: 1.0
-                };
-                
-                await html5QrCode.start(
-                    { facingMode: "environment" },
-                    config,
-                    (decodedText) => {
-                        // QR kod okundu
-                        console.log("QR okundu:", decodedText);
-                        searchByQRCode(decodedText);
-                        stopScanner();
-                    },
-                    (errorMessage) => {
-                        // Hata mesajlarını gösterme (sürekli log doldurmasın)
-                        // console.log(errorMessage);
-                    }
-                );
-            } catch(err) {
-                console.error("Kamera hatası:", err);
-                alert('Kamera başlatılamadı! Lütfen kamera izni verin ve sayfayı yenileyin.\nHata: ' + err.message);
-                stopScanner();
-            }
-        }
-        
-        function stopScanner() {
-            if (html5QrCode) {
-                try {
-                    if (html5QrCode.isScanning) {
-                        html5QrCode.stop().then(() => {
-                            html5QrCode.clear();
-                        }).catch(() => {});
-                    }
-                } catch(e) {}
-            }
-            document.getElementById('scannerModal').classList.remove('active');
-        }
-        
-        function downloadZPL() {
-            const zplContent = document.getElementById('zplOutput').textContent;
-            const blob = new Blob([zplContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `zebra_etiket_40mm_${Date.now()}.zpl`;
-            a.click();
-            URL.revokeObjectURL(url);
-        }
-        
-        function prepareForPrint() {
-            if (lastCreatedOrder) {
-                createPrintLabel(lastCreatedOrder, lastCreatedOrder.orderNumber);
-                setTimeout(() => window.print(), 100);
-            } else if (orders.length > 0) {
-                createPrintLabel(orders[0], orders[0].orderNumber);
-                setTimeout(() => window.print(), 100);
-            } else {
-                alert('❌ Yazdırılacak sipariş bulunamadı!');
-            }
-        }
-        
-        // Global fonksiyonlar
-        window.showOrderModal = showOrderModal;
-        window.confirmDeliver = confirmDeliver;
-        window.deleteOrder = deleteOrder;
-        window.reprintOrder = reprintOrder;
-        
-        // Olay dinleyicileri
-        document.getElementById('generateBtn').addEventListener('click', generateLabel);
-        document.getElementById('printBtn').addEventListener('click', prepareForPrint);
-        document.getElementById('downloadBtn').addEventListener('click', downloadZPL);
-        document.getElementById('scanQrBtnTop').addEventListener('click', startScanner);
-        document.getElementById('closeScanner').addEventListener('click', stopScanner);
-        document.getElementById('closeModal').addEventListener('click', () => {
-            document.getElementById('infoModal').classList.remove('active');
-        });
-        document.getElementById('cancelModalBtn').addEventListener('click', () => {
-            document.getElementById('infoModal').classList.remove('active');
-        });
-        document.getElementById('confirmDeliveryBtn').addEventListener('click', () => {
-            if (currentOrderId) {
-                confirmDeliver(currentOrderId);
-            }
-        });
-        document.getElementById('printOrderBtn').addEventListener('click', () => {
-            if (currentOrderId) {
-                reprintOrder(currentOrderId);
-                document.getElementById('infoModal').classList.remove('active');
-            }
-        });
-        
-        document.getElementById('searchInput').addEventListener('input', (e) => {
-            currentSearch = e.target.value;
-            renderDeliveryTable();
-        });
-        document.getElementById('clearSearchBtn').addEventListener('click', () => {
-            document.getElementById('searchInput').value = '';
-            currentSearch = '';
-            renderDeliveryTable();
-        });
-        
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.filter;
-                renderDeliveryTable();
-            });
-        });
-        
-        // Firebase'den verileri dinlemeye başla
-        listenToFirebase();
-        
-        // Demo sipariş yoksa ekle (ilk açılışta)
-        setTimeout(() => {
-            if (orders.length === 0) {
-                const demoOrder = {
-                    orderNumber: 'DEMO40MM',
-                    customerName: 'Ahmet Yılmaz',
-                    phoneNumber: '0555 123 45 67',
-                    email: 'ahmet@example.com',
-                    address: 'CEVİZLİ MAH. TINAZTEPE SK. No: 12A\n Maltepe/İSTANBUL',
-                    deliveryType: 'Mağaza Teslim',
-                    productName: 'Sipariş Paketi',
-                    status: 'pending',
-                    createdAt: new Date().toISOString()
-                };
-                addOrderToFirebase(demoOrder).then(() => {
-                    console.log('Demo sipariş eklendi');
-                });
-            }
-        }, 2000);
-    </script>
+      }
+    }, error => {
+      console.error('Firebase okuma hatası:', error);
+      loading.classList.remove('active');
+      $('deliveryTableBody').innerHTML = '<tr><td colspan="7" class="empty">Veriler yüklenemedi! İnternet bağlantınızı kontrol edin.</td></tr>';
+    });
+  }
+
+  async function addOrderToFirebase(orderData){
+    const newOrderRef = fb.push(fb.ref(database, 'orders'));
+    orderData.firebaseId = newOrderRef.key;
+    orderData.status = 'pending';
+    orderData.createdAt = new Date().toISOString();
+    await fb.set(newOrderRef, orderData);
+    return orderData;
+  }
+  async function updateOrderInFirebase(orderId, updates){ await fb.update(fb.ref(database, `orders/${orderId}`), updates); }
+  async function deleteOrderFromFirebase(orderId){ await fb.remove(fb.ref(database, `orders/${orderId}`)); }
+
+  function requireDb(){
+    if (!database){ toast('Firebase bağlantısı yok — işlem yapılamadı'); return false; }
+    return true;
+  }
+
+  async function confirmDeliver(orderId){
+    if (!requireDb()) return;
+    const order = findOrderById(orderId);
+    if (order && order.status === 'pending'){
+      try {
+        await updateOrderInFirebase(orderId, { status: 'delivered', deliveredAt: new Date().toISOString() });
+        playBeep();
+        $('infoModal').classList.remove('active');
+        toast(`✓ ${order.orderNumber} teslim edildi`);
+      } catch(e){ toast('Güncellenemedi: ' + e.message, 3500); }
+    }
+  }
+  async function undoDeliver(orderId){
+    if (!requireDb()) return;
+    const order = findOrderById(orderId);
+    if (order && order.status === 'delivered' && confirm(`${order.orderNumber} siparişi tekrar "Bekliyor" durumuna alınsın mı?`)){
+      try {
+        await updateOrderInFirebase(orderId, { status: 'pending', deliveredAt: null });
+        toast(`${order.orderNumber} tekrar bekleyen listesinde`);
+      } catch(e){ toast('Güncellenemedi: ' + e.message, 3500); }
+    }
+  }
+  async function deleteOrder(orderId){
+    if (!requireDb()) return;
+    const order = findOrderById(orderId);
+    if (confirm(`${order ? order.orderNumber + ' — ' : ''}Bu siparişi silmek istediğinize emin misiniz?`)){
+      try {
+        await deleteOrderFromFirebase(orderId);
+        playBeep();
+        if (shownOrder && shownOrder.firebaseId === orderId) showOrderOnLabel(orders.find(o => o.firebaseId !== orderId) || null);
+        toast('Sipariş silindi');
+      } catch(e){ toast('Silinemedi: ' + e.message, 3500); }
+    }
+  }
+
+  /* ===================== Liste ===================== */
+  const fmtDate = iso => iso ? new Date(iso).toLocaleString('tr-TR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) : '-';
+  const I = {
+    query:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>',
+    deliver: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="m5 12 5 5 9-10"/></svg>',
+    print:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>',
+    del:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/></svg>'
+  };
+
+  function renderDeliveryTable(){
+    const tbody = $('deliveryTableBody');
+    let list = [...orders];
+    if (currentFilter === 'pending') list = list.filter(o => o.status === 'pending');
+    else if (currentFilter === 'delivered') list = list.filter(o => o.status === 'delivered');
+    if (currentSearch){
+      const q = currentSearch.toLocaleLowerCase('tr-TR');
+      const qDigits = q.replace(/\D/g, '');
+      list = list.filter(o =>
+        (o.orderNumber || '').toLocaleLowerCase('tr-TR').includes(q) ||
+        (o.customerName || '').toLocaleLowerCase('tr-TR').includes(q) ||
+        (o.phoneNumber || '').includes(currentSearch) ||
+        (qDigits.length >= 3 && (o.phoneNumber || '').replace(/\D/g, '').includes(qDigits))
+      );
+    }
+    if (!list.length){
+      tbody.innerHTML = `<tr><td colspan="7" class="empty">${orders.length ? 'Aramaya uygun sipariş bulunamadı' : 'Henüz sipariş yok'}</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = list.map(o => {
+      const id = esc(o.firebaseId), pending = o.status === 'pending';
+      return `
+      <tr class="${pending ? '' : 'delivered-row'}">
+        <td class="first" data-label="Sipariş No"><span class="ono">${esc(o.orderNumber || '-')}</span><span class="sub">${esc(fmtDate(o.createdAt))}</span></td>
+        <td data-label="Alıcı">${esc(o.customerName || '-')}</td>
+        <td data-label="Telefon">${esc(o.phoneNumber || '-')}</td>
+        <td data-label="Ürün">${esc(o.productName || '-')}</td>
+        <td data-label="Teslim Türü">${esc(o.deliveryType || '-')}</td>
+        <td data-label="Durum"><span class="status-badge ${pending ? 'status-pending' : 'status-delivered'}">${pending ? 'Bekliyor' : 'Teslim Edildi'}</span>${!pending && o.deliveredAt ? `<span class="sub">${esc(fmtDate(o.deliveredAt))}</span>` : ''}</td>
+        <td class="acts"><div class="action-buttons">
+          <button class="icon-btn" data-act="query" data-id="${id}" title="Sorgula">${I.query}</button>
+          ${pending ? `<button class="icon-btn ok" data-act="deliver" data-id="${id}" title="Teslim Et">${I.deliver}</button>` : ''}
+          <button class="icon-btn" data-act="reprint" data-id="${id}" title="Tekrar Bas">${I.print}</button>
+          <button class="icon-btn del" data-act="delete" data-id="${id}" title="Sil">${I.del}</button>
+        </div></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function updateStats(){
+    const pending = orders.filter(o => o.status === 'pending').length;
+    const delivered = orders.filter(o => o.status === 'delivered').length;
+    $('pendingCount').textContent = pending;
+    $('deliveredCount').textContent = delivered;
+    $('totalCount').textContent = orders.length;
+    $('fcAll').textContent = orders.length; $('fcPending').textContent = pending; $('fcDelivered').textContent = delivered;
+  }
+
+  const findOrderById = id => orders.find(o => o.firebaseId === id);
+  function findOrderByOrderNumber(no){
+    const t = String(no).trim();
+    return orders.find(o => o.orderNumber === t) ||
+           orders.find(o => (o.orderNumber || '').toLocaleUpperCase('tr-TR') === t.toLocaleUpperCase('tr-TR'));
+  }
+
+  function reprintOrder(orderId){
+    const order = findOrderById(orderId);
+    if (order){ printOrder(order); playBeep(); }
+  }
+
+  /* ===================== Sipariş detayı ===================== */
+  function fillOrderModal(order){
+    if (!order) return;
+    const pending = order.status === 'pending';
+    $('modalOrderInfo').innerHTML = `
+      <div class="order-hero">
+        <span class="no">${esc(order.orderNumber)}</span>
+        <span class="status-badge ${pending ? 'status-pending' : 'status-delivered'}">${pending ? 'Bekliyor' : 'Teslim Edildi'}</span>
+      </div>
+      <dl class="details">
+        <dt>Alıcı</dt><dd>${esc(order.customerName || '-')}</dd>
+        <dt>Telefon</dt><dd>${order.phoneNumber ? `<a href="tel:${esc(order.phoneNumber.replace(/[^\d+]/g,''))}">${esc(order.phoneNumber)}</a>` : '-'}</dd>
+        <dt>E-posta</dt><dd>${esc(order.email || '-')}</dd>
+        <dt>Adres</dt><dd>${esc(order.address || '-')}</dd>
+        <dt>Teslim Türü</dt><dd>${esc(order.deliveryType || '-')}</dd>
+        <dt>Ürün</dt><dd>${esc(order.productName || '-')}</dd>
+        <dt>Oluşturulma</dt><dd>${esc(fmtDate(order.createdAt))}</dd>
+        ${!pending ? `<dt>Teslim</dt><dd>${esc(fmtDate(order.deliveredAt))}</dd>` : ''}
+      </dl>`;
+    const btn = $('confirmDeliveryBtn');
+    btn.dataset.mode = pending ? 'deliver' : 'undo';
+    btn.className = pending ? 'btn btn-ok wide' : 'btn btn-ghost wide';
+    btn.lastChild.textContent = pending ? ' Teslim Edildi Onayla' : ' Teslimi Geri Al';
+  }
+  function showOrderModal(orderId){
+    currentOrderId = orderId;
+    const order = findOrderById(orderId);
+    if (order){
+      fillOrderModal(order);
+      $('infoModal').classList.add('active');
+      playBeep();
+      if (order.status === 'pending') setTimeout(() => $('confirmDeliveryBtn').focus(), 50);
+    }
+  }
+  const closeInfo = () => $('infoModal').classList.remove('active');
+
+  // QR / el okuyucu ile sorgulama
+  function searchByQRCode(qrData){
+    const no = String(qrData || '').trim();
+    if (!no){ toast('Geçersiz QR kod'); return; }
+    if (!orders.length && !database){ toast('Sipariş listesi yüklenmedi'); return; }
+    const order = findOrderByOrderNumber(no);
+    if (order){ playBeep(); showOrderModal(order.firebaseId); }
+    else toast('Sipariş bulunamadı: ' + no, 3200);
+  }
+
+  /* ===================== Yeni sipariş ===================== */
+  const formIds = ['orderNumber','customerName','phoneNumber','email','address','deliveryType','productName'];
+
+  async function generateLabel(){
+    if (!requireDb()) return;
+    const v = {}; formIds.forEach(k => v[k] = $(k).value.trim());
+    if (!v.orderNumber || !v.customerName){
+      toast('Lütfen sipariş numarası ve alıcı adını girin');
+      (!v.orderNumber ? $('orderNumber') : $('customerName')).focus();
+      return;
+    }
+    if (findOrderByOrderNumber(v.orderNumber) && !confirm(`"${v.orderNumber}" numaralı sipariş zaten var. QR okutmada ilk kayıt açılır. Yine de eklensin mi?`)) return;
+
+    const loading = $('loadingIndicator');
+    loading.classList.add('active');
+    $('generateBtn').disabled = true;
+    try {
+      const savedOrder = await addOrderToFirebase({ ...v });
+      lastCreatedOrder = savedOrder;
+      showOrderOnLabel(savedOrder);
+      ['orderNumber','customerName','phoneNumber','email','productName'].forEach(k => $(k).value = '');
+      $('address').value = DEFAULT_ADDRESS;
+      $('dupWarn').classList.remove('show');
+      toast(`✓ ${savedOrder.orderNumber} kaydedildi — yazdırmaya hazır`, 2800);
+      $('orderNumber').focus();
+    } catch (error){
+      console.error('Kayıt hatası:', error);
+      toast('Kayıt hatası: ' + error.message, 4000);
+    } finally {
+      loading.classList.remove('active');
+      $('generateBtn').disabled = false;
+    }
+  }
+
+  function nextOrderNumber(){
+    let max = 0;
+    orders.forEach(o => { const m = /^MP(\d+)$/i.exec(o.orderNumber || ''); if (m) max = Math.max(max, +m[1]); });
+    $('orderNumber').value = 'MP' + String(max + 1).padStart(3, '0');
+    checkDuplicate();
+    $('customerName').focus();
+  }
+  function checkDuplicate(){
+    const v = $('orderNumber').value.trim();
+    const dup = v && findOrderByOrderNumber(v);
+    $('dupWarn').textContent = dup ? `Bu numarayla kayıtlı bir sipariş var (${dup.customerName || '-'}).` : '';
+    $('dupWarn').classList.toggle('show', !!dup);
+  }
+
+  /* ===================== Kamera tarayıcı ===================== */
+  async function startScanner(){
+    if (typeof Html5Qrcode === 'undefined'){ toast('Kamera kütüphanesi yüklenemedi — internet bağlantısını kontrol edin', 3500); return; }
+    $('scannerModal').classList.add('active');
+    scanHandled = false;
+    try {
+      if (html5QrCode){ try { await html5QrCode.stop(); await html5QrCode.clear(); } catch(e){} }
+      html5QrCode = new Html5Qrcode('qr-reader');
+      const config = {
+        fps: 10,
+        qrbox: (w, h) => { const s = Math.floor(Math.min(w, h) * 0.7); return { width: s, height: s }; },
+        aspectRatio: 1.0
+      };
+      await html5QrCode.start({ facingMode: 'environment' }, config, decodedText => {
+        if (scanHandled) return;
+        scanHandled = true;
+        stopScanner();
+        searchByQRCode(decodedText);
+      }, () => {});
+    } catch(err){
+      console.error('Kamera hatası:', err);
+      toast('Kamera başlatılamadı! Kamera izni verip sayfayı yenileyin.', 4000);
+      stopScanner();
+    }
+  }
+  function stopScanner(){
+    if (html5QrCode){
+      try { if (html5QrCode.isScanning) html5QrCode.stop().then(() => html5QrCode.clear()).catch(() => {}); } catch(e){}
+    }
+    $('scannerModal').classList.remove('active');
+  }
+
+  /* ===================== ZPL indir / kopyala ===================== */
+  function downloadZPL(){
+    const order = shownOrder || lastCreatedOrder || orders[0];
+    if (!order){ toast('İndirilecek sipariş bulunamadı'); return; }
+    if (order !== shownOrder) showOrderOnLabel(order);
+    const blob = new Blob([currentZPL], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `zebra_etiket_${geom().mm}mm_${String(order.orderNumber).replace(/[^\w.-]+/g, '_')}.zpl`;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    toast('ZPL dosyası indirildi');
+  }
+  async function copyZPL(){
+    if (!currentZPL){ toast('Kopyalanacak ZPL yok'); return; }
+    try { await navigator.clipboard.writeText(currentZPL); toast('ZPL panoya kopyalandı'); }
+    catch(e){
+      const ta = document.createElement('textarea'); ta.value = currentZPL; document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); toast('ZPL panoya kopyalandı'); } catch(_) { toast('Kopyalanamadı'); }
+      ta.remove();
+    }
+  }
+  function prepareForPrint(){
+    printOrder(shownOrder || lastCreatedOrder || orders[0]);
+  }
+
+  /* ===================== Ayarlar ===================== */
+  function saveSettings(){ try { localStorage.setItem('mp_teslim_settings', JSON.stringify({ dpi: dpiSel.value, logo: logoChk.checked, size: sizeSel.value })); } catch(e){} }
+  try { const st = JSON.parse(localStorage.getItem('mp_teslim_settings') || 'null'); if (st){ dpiSel.value = st.dpi; logoChk.checked = !!st.logo; if (st.size) sizeSel.value = st.size; } } catch(e){}
+
+  /* ===================== Olaylar ===================== */
+  window.showOrderModal = showOrderModal;
+  window.confirmDeliver = confirmDeliver;
+  window.deleteOrder = deleteOrder;
+  window.reprintOrder = reprintOrder;
+
+  $('generateBtn').addEventListener('click', generateLabel);
+  $('printBtn').addEventListener('click', prepareForPrint);
+  $('downloadBtn').addEventListener('click', downloadZPL);
+  $('copyBtn').addEventListener('click', copyZPL);
+  $('newNoBtn').addEventListener('click', nextOrderNumber);
+  $('orderNumber').addEventListener('input', checkDuplicate);
+  $('scanQrBtnTop').addEventListener('click', startScanner);
+  $('closeScanner').addEventListener('click', stopScanner);
+  $('closeModal').addEventListener('click', closeInfo);
+  $('cancelModalBtn').addEventListener('click', closeInfo);
+  $('infoModal').addEventListener('click', e => { if (e.target === $('infoModal')) closeInfo(); });
+  $('confirmDeliveryBtn').addEventListener('click', () => {
+    if (!currentOrderId) return;
+    $('confirmDeliveryBtn').dataset.mode === 'undo' ? undoDeliver(currentOrderId) : confirmDeliver(currentOrderId);
+  });
+  $('printOrderBtn').addEventListener('click', () => { if (currentOrderId){ reprintOrder(currentOrderId); closeInfo(); } });
+
+  $('lookupForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('lookupInput').value.trim();
+    if (v){ searchByQRCode(v); $('lookupInput').value = ''; }
+  });
+
+  $('deliveryTableBody').addEventListener('click', e => {
+    const b = e.target.closest('button[data-act]');
+    if (!b) return;
+    const id = b.dataset.id;
+    ({ query: showOrderModal, deliver: confirmDeliver, reprint: reprintOrder, delete: deleteOrder })[b.dataset.act]?.(id);
+  });
+
+  $('searchInput').addEventListener('input', e => { currentSearch = e.target.value.trim(); renderDeliveryTable(); });
+  $('clearSearchBtn').addEventListener('click', () => { $('searchInput').value = ''; currentSearch = ''; renderDeliveryTable(); });
+  document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderDeliveryTable();
+  }));
+
+  copiesInp.addEventListener('input', renderShown);
+  dpiSel.addEventListener('change', () => { saveSettings(); renderShown(); });
+  sizeSel.addEventListener('change', () => { saveSettings(); applyPageSize(); renderShown(); });
+  applyPageSize();
+  logoChk.addEventListener('change', () => { saveSettings(); renderShown(); });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape'){ closeInfo(); if ($('scannerModal').classList.contains('active')) stopScanner(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter'){ e.preventDefault(); prepareForPrint(); }
+    if ((e.ctrlKey || e.metaKey) && (e.key === 'p' || e.key === 'P')){ e.preventDefault(); prepareForPrint(); }
+  });
+  window.addEventListener('afterprint', () => { $('printArea').textContent = ''; });
+
+  renderShown();
+  initFirebase();
+</script>
 </body>
 </html>
